@@ -13,6 +13,8 @@ import 'horse.dart' as horse;
 import 'equipment.dart' as equipment;
 import 'myprofile.dart' as myprofile;
 import 'splashscreen.dart' as splash;
+import 'homescreen.dart' as home;
+import 'globals.dart';
 import 'preference.dart' as preference;
 import 'steps.dart' as steps;
 void main() => runApp(MaterialApp(
@@ -230,7 +232,7 @@ class HomeRoutes extends StatefulWidget {
 
 class _HomeState extends State<HomeRoutes> {
   String _loggedin='no';
-  preference.User user;
+  User user;
   @override
   void initState() {
     super.initState();
@@ -264,7 +266,7 @@ class _HomeState extends State<HomeRoutes> {
           bottomNavigationBar: menu(),
           body: TabBarView(
             children: [
-              splash.HomeScreen(),
+              home.HomeScreen(),
               LetsGo(_loggedin),
               MyProfileListing(),
             ],
@@ -355,7 +357,7 @@ Future fetchProfile() async {
     x = value;
     print(value);
     if(value == 'no' || value == ''){
-     x = new preference.User(name:'semir',email:'semir',loggedIn:'no');
+     x = new User(name:'semir',email:'semir',loggedIn:'no');
     }
     else {
       preference.MySharedPreferences.instance.getUserProfile().then((value) {

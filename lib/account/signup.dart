@@ -1,9 +1,6 @@
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'signin.dart' as signin;
 import '../preference.dart' as preference;
 import '../main.dart' as main;
@@ -16,16 +13,22 @@ class SignUpHttp extends StatefulWidget {
   SignUpRoute createState() => SignUpRoute();
 }
 
-class Item {
-  const Item(this.name, this.icon);
-  final String name;
-  final Icon icon;
-}
+
 
 class SignUpRoute extends State<SignUpHttp> {
   User formData = User();
   final _formKey = GlobalKey<FormState>();
+  final username = new TextEditingController();
 
+  final email = new TextEditingController();
+  final password = new TextEditingController();
+  @override
+  void dispose() {
+    username.dispose();
+    password.dispose();
+    email.dispose();
+    super.dispose();
+  }
 
   void displayBottomSheet(BuildContext context) {
     showModalBottomSheet<void>(
@@ -101,6 +104,7 @@ class SignUpRoute extends State<SignUpHttp> {
                   SizedBox(
                                   height: 60.0,
                                   child: TextFormField(
+                                    controller:username,
                                     validator: (value) {
                                       if (value.isEmpty) {
                                         return 'User Name is Required';
@@ -140,6 +144,7 @@ class SignUpRoute extends State<SignUpHttp> {
                               SizedBox(
                                   height: 60.0,
                                   child: TextFormField(
+                                    controller:email,
                                     validator: (value) {
                                       if (value.isEmpty) {
                                         return 'Email is Required';
@@ -178,6 +183,7 @@ class SignUpRoute extends State<SignUpHttp> {
                               SizedBox(
                                   height: 60.0,
                                   child: TextFormField(
+                                    controller:password,
                                     validator: (value) {
                                       if (value.isEmpty) {
                                         return 'Password is Required';
@@ -236,12 +242,12 @@ class SignUpRoute extends State<SignUpHttp> {
                                           print('hello');
                                           displayBottomSheet(context);
                                           setState(() {
-                                            _user_details=  signup(formData.user_name,formData.email,form.password);
+                                            _user_details=  signup(formData.user_name,formData.email,formData.password);
 
                                           });
-                                          await new Future.delayed(const Duration(seconds: 2));
+                                          await  Future.delayed(const Duration(seconds: 2));
 
-                                          _user_details.then((result){
+                                          await _user_details.then((result){
                                             Navigator.pop(context);
 
                                             if (result.statusCode == 200) {
@@ -252,11 +258,7 @@ class SignUpRoute extends State<SignUpHttp> {
                                                   .MySharedPreferences.instance
                                                   .setStringValue(
                                                   "isloggedin", 'yes');
-                                              preference
-                                                  .MySharedPreferences.instance
-                                                  .getUserProfile()
-                                                  .then((value) {
-                                                print(value.name);
+
 
                                                 Navigator.pushReplacement(
                                                   context,
@@ -264,7 +266,7 @@ class SignUpRoute extends State<SignUpHttp> {
                                                       builder: (context) =>
                                                           main.HomeRoutes(0)),
                                                 );
-                                              });
+
                                             }
                                           });
 

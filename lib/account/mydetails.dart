@@ -1,63 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'preference.dart' as preference;
-FormDataMyDetails _$FormDataFromJsonMyDetails(Map<String, dynamic> json) {
-  return FormDataMyDetails(
-      first_name: json['first_name'] as String,
-      last_name: json['last_name'] as String,
-      date_of_birth: json['date_of_birth'] as String,
-      gender: json['gender'] as String,
-      nationality: json['nationality'] as String,
-      agree: json['agree'] as bool,
-      password: json['password'] as String,
-      email: json['email'] as String,
-  phone: json['phone'] as String);
-}
-
-Map<String, dynamic> _$FormDataToJsonMyDetails(FormDataMyDetails instance) =>
-    <String, dynamic>{
-      'first_name': instance.first_name,
-      'last_name': instance.last_name,
-      'date_of_birth': instance.date_of_birth,
-      'gender': instance.gender,
-      'nationality': instance.nationality,
-      'agree': instance.agree,
-      'email': instance.email,
-      'password': instance.password,
-      'phone':instance.phone
-    };
-
-@JsonSerializable()
-class FormDataMyDetails {
-  String first_name;
-  String last_name;
-  String date_of_birth;
-  String gender;
-  String nationality;
-  bool agree;
-  String password;
-  String email;
-  String phone;
-
-  FormDataMyDetails(
-      {this.first_name,
-      this.last_name,
-      this.date_of_birth,
-      this.gender,
-      this.nationality,
-      this.agree,
-      this.email,
-      this.password,this.phone});
-
-  factory FormDataMyDetails.fromJson(Map<String, dynamic> json) =>
-      _$FormDataFromJsonMyDetails(json);
-
-  Map<String, dynamic> toJson() => _$FormDataToJsonMyDetails(this);
-}
+import '../preference.dart' as preference;
+import '../main.dart' as main;
+import 'api.dart';
+import '../globals.dart';
 
 class MyDetailsHttp extends StatefulWidget {
 
@@ -66,7 +14,7 @@ class MyDetailsHttp extends StatefulWidget {
 
     this.user,
   );
-  preference.User user;
+  User user;
  // MyDetailsHttp(this.user);
   @override
   MyDetailsRoute createState() => MyDetailsRoute();
@@ -80,7 +28,7 @@ class Item {
 
 class MyDetailsRoute extends State<MyDetailsHttp> {
 
-  FormDataMyDetails formDataMyDetails = FormDataMyDetails();
+  User formData = User();
   int _value = 1;
   bool _throwShotAway = true;
   String _genderValue = 'male';
@@ -105,10 +53,10 @@ class MyDetailsRoute extends State<MyDetailsHttp> {
   void initState() {
     super.initState();
 setState(() {
-  username.text = widget.user.name;
+  username.text = widget.user.first_name;
   email.text = widget.user.email;
-  formDataMyDetails.first_name=widget.user.name;
-  formDataMyDetails.email=widget.user.email;
+  formData.first_name=widget.user.first_name;
+  formData.email=widget.user.email;
 
 });
 
@@ -134,7 +82,32 @@ setState(() {
           color: const Color(0xFF167F67),
         )),
   ];
+  InputDecoration TextInputDeco(String label){
+  return InputDecoration(
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+          color: Colors.black, width: 1.0),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+          color: Colors.grey, width: 1.0),
+    ),
+    border: OutlineInputBorder(
+      borderSide: BorderSide(
+          color: Colors.grey, width: 1.0),
+    ),
+    filled: true,
+    contentPadding: EdgeInsets.only(left:10.0),
+    fillColor: Colors.white,
+    //labelText: 'Username or Email',
+    hintText: label,
+    hintStyle: TextStyle(
+        color: Colors.grey, fontSize: 20.0),
+    labelStyle: TextStyle(
+        color: Colors.grey, fontSize: 20.0),
 
+  );
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -144,7 +117,7 @@ setState(() {
           FlatButton(
             textColor: Colors.black,
             onPressed: () {
-print(jsonEncode(formDataMyDetails));
+print(jsonEncode(formData));
             },
             child: Text("SAVE"),
 
@@ -166,40 +139,37 @@ print(jsonEncode(formDataMyDetails));
                     height: 20.0,
                     ),
                     SizedBox(
+                      height: 20.0,
+                        width: MediaQuery.of(context).size.width - 40.0,
+
+                        child:Row(
+                        children:<Widget>[
+    GestureDetector(
+    onTap: () {
+    },
+    child:
+
+                          new Image.asset(
+                            'assets/images/introl-trailer-image.jpg',
+                            width: 100.0,
+                            height:100.0,
+                            fit: BoxFit.contain,
+                          )),
+                        ]
+                      )
+                    ),
+                    SizedBox(
                         height: 60.0,
                         child: TextFormField(
                           readOnly: true,
 controller:username,
                           style: TextStyle(fontSize: 20.0),
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.black, width: 1.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.grey, width: 1.0),
-                            ),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.grey, width: 1.0),
-                            ),
-                            filled: true,
-                            contentPadding: EdgeInsets.only(left:10.0),
-                            fillColor: Colors.white,
-                            //labelText: 'Username or Email',
-                            hintText: 'Username',
-                            hintStyle: TextStyle(
-                                color: Colors.grey, fontSize: 20.0),
-                            labelStyle: TextStyle(
-                                color: Colors.grey, fontSize: 20.0),
-
-                          ),
+                          decoration: TextInputDeco('Username'),
                           onChanged: (value) {
-  setState(() {
-    formDataMyDetails.first_name = value;
+                            setState(() {
+                              formData.first_name = value;
 
-  });
+                            });
                           },
                         )),
                     SizedBox(
@@ -234,7 +204,7 @@ controller:email,
                           ),
                           onChanged: (value) {
                             setState(() {
-                              formDataMyDetails.email = value;
+                              formData.email = value;
 
                             });
                           },
@@ -269,7 +239,7 @@ controller:email,
 
                             ),
                             onChanged: (value) {
-                              formDataMyDetails.phone = value;
+                              formData.phone = value;
                             },
                           )),
                       SizedBox(
@@ -308,7 +278,7 @@ controller:email,
 
                             ),
                             onChanged: (value) {
-                              formDataMyDetails.email = value;
+                              formData.email = value;
                             },
                           ))])
 
@@ -343,7 +313,7 @@ controller:email,
 
                             ),
                             onChanged: (value) {
-                              formDataMyDetails.first_name = value;
+                              formData.first_name = value;
                             },
                               keyboardType: TextInputType.number
                           )),
@@ -378,7 +348,7 @@ controller:email,
 
                             ),
                             onChanged: (value) {
-                              formDataMyDetails.last_name = value;
+                              formData.last_name = value;
                             },
                           )),
 
@@ -434,7 +404,7 @@ controller:email,
                             groupValue: _genderValue,
                             onChanged: (String value) {
                               setState(() {
-                                //formDataMyDetails.agree = newValue;
+                                //formData.agree = newValue;
                                 _genderValue = value;
                               });
                             },
@@ -448,7 +418,7 @@ controller:email,
                             groupValue: _genderValue,
                             onChanged: (String value) {
                               setState(() {
-                                //formDataMyDetails.agree = newValue;
+                                //formData.agree = newValue;
                                 _genderValue = value;
                               });
                             },
@@ -482,7 +452,7 @@ controller:email,
                                   value: selectedCountry,
                                   onChanged: (Item Value) {
                                     setState(() {
-                                      //formDataMyDetails.agree = newValue;
+                                      //formData.agree = newValue;
                                       selectedCountry = Value;
                                     });
                                   },
@@ -530,7 +500,7 @@ controller:email,
                                   context: context,
                                   child: AlertDialog(
                                     title: Text(json
-                                        .encode(formDataMyDetails.toJson())),
+                                        .encode(formData.toJson())),
                                     actions: [
                                       FlatButton(
                                         child: Text('OK'),

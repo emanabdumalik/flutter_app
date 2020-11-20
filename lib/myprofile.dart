@@ -11,6 +11,7 @@ import 'mydetails.dart' as mydetails;
 import 'signin.dart' as signin;
 import 'preference.dart' as preference;
 import 'main.dart' as main;
+import 'routes.dart' as routes;
 
 class MyProfileListing extends StatelessWidget {
   @override
@@ -37,7 +38,7 @@ class MyProfileListing extends StatelessWidget {
 }
 
 class MyProfileListingLoggedIn extends StatelessWidget {
-  preference.User user;
+  User user;
   MyProfileListingLoggedIn(this.user);
 
 
@@ -59,7 +60,7 @@ class MyProfileListingLoggedIn extends StatelessWidget {
                   children: <Widget>[
                     user.loggedIn == 'yes'
                         ? ListTile(
-                            title: Text(user.name,
+                            title: Text(user.user_name,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(fontSize: 25.0)),
                           )
@@ -115,12 +116,43 @@ class MyProfileListingLoggedIn extends StatelessWidget {
                             })
                         : Text(''),
                     ListTile(
+                        leading: Icon(Icons.email),
+                        title: Text('Contact'),
+                        onTap: () {
+                          print('hello');
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute<void>(
+                              builder: (context) =>
+                          routes.ContactRoute,
+                          );
+                        }
+                    ),
+                    ListTile(
                       leading: Icon(Icons.info),
                       title: Text('Terms and Conditions'),
+                        onTap: () {
+                          print('hello');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute<void>(
+                                builder: (context) =>
+                                    routes.TermsRoute),
+                          );
+                        }
                     ),
                     ListTile(
                       leading: Icon(Icons.apps),
                       title: Text('About'),
+                        onTap: () {
+                          print('hello');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute<void>(
+                                builder: (context) =>
+                                    routes.AboutRoute,
+                          );
+                        }
                     ),
                     user.loggedIn == 'yes'
                         ? ListTile(

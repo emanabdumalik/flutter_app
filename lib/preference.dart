@@ -25,7 +25,9 @@ class MySharedPreferences {
 
   Future<User> getUserProfile() async {
     SharedPreferences shared_User = await SharedPreferences.getInstance();
-    Map userMap = jsonDecode(shared_User.getString('user'));
+    dynamic userMap = jsonDecode(shared_User.getString('user')) ??  jsonDecode(jsonEncode(
+       {'user_name': '', 'email': '', 'logged_in': 'no'}
+    )) ;
     var user = User.fromJson(userMap);
     return user;
   }

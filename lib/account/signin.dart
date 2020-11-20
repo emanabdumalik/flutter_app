@@ -1,9 +1,6 @@
-import 'dart:convert';
 import 'dart:async';
 
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'signup.dart' as signup;
 import '../preference.dart' as preference;
 import '../main.dart' as main;
@@ -79,7 +76,7 @@ class LogInRoute extends State<SignInHttp> {
           child:  Container(
               margin: EdgeInsets.only(top: 0),
               padding:
-                  EdgeInsets.only(left: 40.0, right: 40.0, top: 15, bottom: 15),
+                  EdgeInsets.only(left: 40.0, right: 40.0, top: 0.0, bottom: 0.0),
               width: MediaQuery.of(context).size.width * 1,
               height: MediaQuery.of(context).size.height * 1,
               decoration:  BoxDecoration(
@@ -181,6 +178,25 @@ class LogInRoute extends State<SignInHttp> {
                         )),
                     SizedBox(
                         width: double.infinity,
+                        height: 20,
+                        child: Center(
+                            child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute<void>(
+                                        builder: (context) =>
+                                            signup.SignUpHttp()),
+                                  );
+                                },
+                                child: Text(
+                                  'Forgot Password',
+                                  textAlign: TextAlign.right,
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 17.0),
+                                )))),
+                    SizedBox(
+                        width: double.infinity,
                         height: 50,
                         child: RaisedButton(
                             shape: RoundedRectangleBorder(
@@ -198,12 +214,12 @@ class LogInRoute extends State<SignInHttp> {
                                 displayBottomSheet(context);
                                 setState(() {
                                   _user_details =
-                                      login(formData.email, formData.password);
+                                       login(formData.email, formData.password);
                                 });
-                                await new Future.delayed(
+                                await Future.delayed(
                                     const Duration(seconds: 2));
 
-                                _user_details.then((result) {
+                               await  _user_details.then((result) {
                                   Navigator.pop(context);
 
                                   if (result.statusCode == 200) {
@@ -211,10 +227,7 @@ class LogInRoute extends State<SignInHttp> {
                                         .setUserProfile(result.user);
                                     preference.MySharedPreferences.instance
                                         .setStringValue("isloggedin", 'yes');
-                                    preference.MySharedPreferences.instance
-                                        .getUserProfile()
-                                        .then((value) {
-                                      print(value.name);
+
 
                                       Navigator.pushReplacement(
                                         context,
@@ -222,7 +235,7 @@ class LogInRoute extends State<SignInHttp> {
                                             builder: (context) =>
                                                 main.HomeRoutes(0)),
                                       );
-                                    });
+
                                   }
                                 });
                               }

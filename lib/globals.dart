@@ -16,11 +16,11 @@ class User {
    String date_of_birth;
    String nationality;
    String city;
-   bool confirmed;
+   bool confirmed=false;
    String confirmation_code;
-   bool logged_in;
+   bool logged_in=false;
    String token;
-   bool password_reset_requested;
+   bool password_reset_requested=false;
 
   User({
     this.profile_pic,
@@ -47,23 +47,24 @@ class User {
   Map<String, dynamic> toJson() => _$FormDataToJson(this);
 
 }
+
   User _$FormDataFromJson(Map<String, dynamic> parsedJson) {
     return  User(
-      profile_pic: parsedJson['data']['profile_pic'] as String,
-      user_name: parsedJson['data']['user_name'] as String,
-      email: parsedJson['data']['email'] as String,
-      password: parsedJson['data']['password'] as String,
-      first_name: parsedJson['data']['first_name'] as String,
-      last_name: parsedJson['data']['last_name'] as String,
-      gender: parsedJson['data']['gender'] as String,
-      date_of_birth: parsedJson['data']['date_of_birth'] as String,
-      nationality: parsedJson['data']['nationality'] as String,
-      city: parsedJson['data']['city'] as String,
-      confirmed: (parsedJson['data']['confirmed'] ?? false) as bool,
-      confirmation_code: parsedJson['data']['confirmation_code'] as String,
-      logged_in: (parsedJson['data']['logged_in'] ?? false) as bool,
-      token: parsedJson['data']['token'] as String,
-      password_reset_requested: (parsedJson['data']['password_reset_requested'] ?? false) as bool,
+      profile_pic: parsedJson['profile_pic'] as String,
+      user_name: parsedJson['user_name'] as String,
+      email: parsedJson['email'] as String,
+      password: parsedJson['password'] as String,
+      first_name: parsedJson['first_name'] as String,
+      last_name: parsedJson['last_name'] as String,
+      gender: parsedJson['gender'] as String,
+      date_of_birth: parsedJson['date_of_birth'] as String,
+      nationality: parsedJson['nationality'] as String,
+      city: parsedJson['city'] as String,
+      confirmed: (parsedJson['confirmed'] ?? false) as bool,
+      confirmation_code: parsedJson['confirmation_code'] as String,
+      logged_in: (parsedJson['logged_in'] ?? false) as bool,
+      token: parsedJson['token'] as String,
+      password_reset_requested: (parsedJson['password_reset_requested'] ?? false) as bool,
 
 
 
@@ -105,4 +106,94 @@ class ResponseParser {
         message: (json['message'] ?? '')  as String,
         user: (json['user'] ?? User())  as Map,);
   }
+}
+void displayBottomSheetSelector(BuildContext context,List DataList) {
+  showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useRootNavigator: false,
+      isDismissible: false,
+      builder: (ctx) {
+        return Container(
+          color: Colors.white,
+          height: MediaQuery.of(context).size.height,
+          child: Center(
+
+          ),
+        );
+      });
+}
+class DataItem {
+  const DataItem(this.name, this.icon);
+  final String name;
+  final Icon icon;
+}
+List<DataItem> NationalitySelection = <DataItem>[
+  const DataItem(
+      'Arab',
+      Icon(
+        Icons.check_box,
+        color: const Color(0xFF167F67),
+      )),
+  const DataItem(
+      'United States',
+      Icon(
+        Icons.check_box,
+        color: const Color(0xFF167F67),
+      )),
+  const DataItem(
+      'England',
+      Icon(
+        Icons.check_box,
+        color: const Color(0xFF167F67),
+      )),
+];
+List<String> CitySelection = <String>[
+"Addis Ababa",
+  "Bahirdar"
+];
+List<String> AdType = <String>[
+
+];
+List<String> AdCategory = <String>[
+
+];
+List<String> Breed = <String>[
+
+];
+List<String> EquipmentCondition = <String>[
+
+];
+List<String> EquipmentType = <String>[
+
+];
+List<String> Gender = <String>[
+
+];
+
+InputDecoration TextInputDeco(String label){
+  return InputDecoration(
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+          color: Colors.black, width: 1.0),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+          color: Colors.grey, width: 1.0),
+    ),
+    border: OutlineInputBorder(
+      borderSide: BorderSide(
+          color: Colors.grey, width: 1.0),
+    ),
+    filled: true,
+    contentPadding: EdgeInsets.only(left:10.0),
+    fillColor: Colors.white,
+    //labelText: 'Username or Email',
+    hintText: label,
+    hintStyle: TextStyle(
+        color: Colors.grey, fontSize: 20.0),
+    labelStyle: TextStyle(
+        color: Colors.grey, fontSize: 20.0),
+
+  );
 }

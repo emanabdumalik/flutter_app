@@ -46,7 +46,7 @@ class ForgotRoute extends State<ForgotHttp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Forgot Password'),
+        title: Text('Create New Passowrd'),
         /*
         actions: <Widget>[
           FlatButton(
@@ -94,18 +94,20 @@ class ForgotRoute extends State<ForgotHttp> {
                     SizedBox(
                         height: 60.0,
                         child: TextFormField(
-                          controller: email,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Email is Required';
-                            }
-                            setState(() {
-                              formData.email = value;
-                            });
-                            return null;
-                          },
-                          style: TextStyle(fontSize: 20.0),
-                          decoration:  TextInputDeco('Email')
+                            controller: email,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Password is Required';
+                              }
+                              setState(() {
+                                formData.email = value;
+                              });
+                              return null;
+                            },
+                            style: TextStyle(fontSize: 20.0),
+                            decoration:  TextInputDeco('Password'),
+                          obscureText: true,
+
 
                         )),
 

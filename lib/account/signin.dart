@@ -5,74 +5,18 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'signup.dart' as signup;
-import 'preference.dart' as preference;
-import 'main.dart' as main;
+import '../preference.dart' as preference;
+import '../main.dart' as main;
+import 'api.dart';
+import '../globals.dart';
 
-Future<Parser> login(String username, String password) async {
-  final http.Response response = await http.post(
-    'http://192.168.0.108/ff/restopress/wp-json/remote-login/login',
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(
-        <String, String>{'username': username, 'password': password}),
-  );
-
-  return Parser.fromJson(jsonDecode(response.body));
-}
-
-class Parser {
-  final int statusCode;
-  final bool success;
-  final String message;
-  final Map user;
-
-  Parser({this.statusCode, this.success, this.message, this.user});
-
-  factory Parser.fromJson(Map<String, dynamic> json) {
-    return Parser(
-        statusCode: json['statusCode'],
-        success: json['success'],
-        message: json['message'],
-        user: json['user']);
-  }
-}
-
-
-
-Map<String, dynamic> _$FormDataToJson(FormData instance) => <String, dynamic>{
-      'email': instance.email,
-      'password': instance.password,
-    };
-
-@JsonSerializable()
-class FormData {
-  String email;
-  String password;
-
-  FormData({
-    this.email,
-    this.password,
-  });
-
-  factory FormData.fromJson(Map<String, dynamic> json) =>
-      _$FormDataFromJson(json);
-
-  Map<String, dynamic> toJson() => _$FormDataToJson(this);
-}
-FormData _$FormDataFromJson(Map<String, dynamic> json) {
-  return FormData(
-    email: json['email'] as String,
-    password: json['password'] as String,
-  );
-}
 class SignInHttp extends StatefulWidget {
   @override
   LogInRoute createState() => LogInRoute();
 }
 
 class LogInRoute extends State<SignInHttp> {
-  FormData formData = FormData();
+  User formData = User();
   void displayBottomSheet(BuildContext context) {
     showModalBottomSheet<void>(
         context: context,
@@ -92,8 +36,8 @@ class LogInRoute extends State<SignInHttp> {
   }
 
   final _formKey = GlobalKey<FormState>();
-  final Map user = {};
-  Future<Parser> _user_details;
+
+  Future<ResponseParser> _user_details;
   final username = new TextEditingController();
 
   final password = new TextEditingController();
@@ -132,13 +76,13 @@ class LogInRoute extends State<SignInHttp> {
         ],*/
       ),
       body: Center(
-          child: new Container(
+          child:  Container(
               margin: EdgeInsets.only(top: 0),
               padding:
                   EdgeInsets.only(left: 40.0, right: 40.0, top: 15, bottom: 15),
               width: MediaQuery.of(context).size.width * 1,
               height: MediaQuery.of(context).size.height * 1,
-              decoration: new BoxDecoration(
+              decoration:  BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               child: Form(
@@ -162,11 +106,14 @@ class LogInRoute extends State<SignInHttp> {
                             if (value.isEmpty) {
                               return 'Email is Required';
                             }
+    setState(() {
+                              formData.email = value;
+                            });
                             return null;
                           },
                           style: TextStyle(fontSize: 20.0),
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
+                          decoration:  InputDecoration(
+                            focusedBorder:  OutlineInputBorder(
                               borderSide:
                                   BorderSide(color: Colors.black, width: 1.0),
                             ),
@@ -190,12 +137,7 @@ class LogInRoute extends State<SignInHttp> {
                             prefixIcon:
                                 Icon(Icons.alternate_email, color: Colors.grey),
                           ),
-                          onChanged: (value) {
-                            print(value);
-                            setState(() {
-                              formData.email = value;
-                            });
-                          },
+
                         )),
                     SizedBox(
                         height: 60.0,
@@ -205,6 +147,9 @@ class LogInRoute extends State<SignInHttp> {
                             if (value.isEmpty) {
                               return 'Password is Required';
                             }
+                            setState(() {
+                              formData.password = value;
+                            });
                             return null;
                           },
                           style: TextStyle(fontSize: 20.0),
@@ -232,12 +177,7 @@ class LogInRoute extends State<SignInHttp> {
                             prefixIcon: Icon(Icons.lock, color: Colors.grey),
                           ),
                           obscureText: true,
-                          onChanged: (value) {
-                            print(value);
-                            setState(() {
-                              formData.password = value;
-                            });
-                          },
+
                         )),
                     SizedBox(
                         width: double.infinity,

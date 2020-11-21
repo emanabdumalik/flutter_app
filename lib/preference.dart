@@ -24,11 +24,15 @@ class MySharedPreferences {
 
   Future<User> getUserProfile() async {
     SharedPreferences shared_User = await SharedPreferences.getInstance();
-    dynamic user_default = new User();
-   dynamic userMap =  jsonDecode(shared_User.getString('user')) ??
-        jsonDecode(jsonEncode(user_default.toJson()));
-    var user = User.fromJson(userMap);
-    return user;
+    User user_default = new User();
+   String userMap =  shared_User.getString('user') ?? '';
+   if(userMap == '' || userMap == null){
+     return user_default;
+   }
+   else {
+     User user = User.fromJson(jsonDecode(userMap));
+     return user;
+   }
   }
 
   Future<String> getStringValue(String key) async {

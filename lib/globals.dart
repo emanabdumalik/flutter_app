@@ -41,13 +41,13 @@ class User {
       this.token,
       this.password_reset_state});
 
-  factory User.fromJson(Map<String, dynamic> parsedJson) =>
+  factory User.fromJson(dynamic parsedJson) =>
       _$UserFromJson(parsedJson);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }
 
-User _$UserFromJson(Map<String, dynamic> parsedJson) {
+User _$UserFromJson(dynamic parsedJson) {
   return User(
     profile_pic: parsedJson['profile_pic'] as String,
     user_name: parsedJson['user_name'] as String,
@@ -116,7 +116,7 @@ class ResponseParser {
 
   ResponseParser({this.statusCode, this.success, this.message, this.user});
 
-  factory ResponseParser.fromJson(Map<String, dynamic> json) {
+  factory ResponseParser.fromJson(dynamic json) {
     return ResponseParser(
       statusCode: (json['statusCode'] ?? 100) as int,
       success: (json['success'] ?? false) as bool,
@@ -499,3 +499,139 @@ class FloatAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
+FloatingActionButton floatingActionButton(BuildContext context,String page,Icon icon){
+  return FloatingActionButton(
+
+    child: icon,
+    onPressed: () {
+      Navigator.of(context).pushReplacementNamed(page);
+      print('Clicked');
+    },
+  );
+}
+class Choice {
+  const Choice({this.title, this.icon});
+
+  final String title;
+  final IconData icon;
+}
+class ChoiceCard extends StatelessWidget {
+  const ChoiceCard({Key key, this.choice}) : super(key: key);
+
+  final Choice choice;
+
+  @override
+  Widget build(BuildContext context) {
+    final TextStyle textStyle = Theme.of(context).textTheme.display1;
+    return Card(
+      color: Colors.white,
+      child: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            //Icon(choice.icon, color: textStyle.color),
+            Text(choice.title),
+          ],
+        ),
+      ),
+    );
+  }
+}
+PopupMenuButton popupMenuButton(BuildContext context,State widget,Choice _selectedChoice,List<Choice> choices,Icon icon){
+
+  void _select(Choice choice) {
+    // Causes the app to rebuild with the new _selectedChoice.
+    widget.setState(() {
+      _selectedChoice = choice;
+    });
+  }
+  return PopupMenuButton<Choice>(
+    icon: icon,
+    onSelected: _select,
+    itemBuilder: (BuildContext context) {
+      return choices.map((Choice choice) {
+        return PopupMenuItem<Choice>(
+            value: choice,
+            child: ChoiceCard(choice: choice));
+            //child: Text(choice.title));
+      }).toList();
+    }
+  );
+}
+
+/*
+showSearch<void>(context: context, delegate: Search(horses));
+class Search extends SearchDelegate<void> {
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return <Widget>[
+      IconButton(
+        icon: Icon(Icons.close),
+        onPressed: () {
+          query = "";
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+  }
+
+  Horse selectedResult;
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return Container(
+      child: Center(
+        child: Text(selectedResult.title),
+      ),
+    );
+  }
+
+  final List<Horse> listExample;
+  Search(this.listExample);
+
+  List<Horse> recentList = [];
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<Horse> suggestionList = [];
+    query.isEmpty
+        ? suggestionList = recentList //In the true case
+        : suggestionList.addAll(listExample.where(
+            // In the false case
+            (element) => element.title.contains(query),
+          ));
+
+    return ListView.builder(
+      itemCount: suggestionList.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(
+            suggestionList[index].title,
+          ),
+          leading: query.isEmpty ? Icon(Icons.access_time) : SizedBox(),
+          onTap: () {
+            selectedResult = suggestionList[index];
+            Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (context) =>
+                    DetailScreen(horse: suggestionList[index]),
+              ),
+            );
+            //showResults(context);
+          },
+        );
+      },
+    );
+  }
+}
+ */

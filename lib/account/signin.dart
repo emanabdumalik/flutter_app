@@ -6,6 +6,7 @@ import '../preference.dart' as preference;
 import '../main.dart' as main;
 import 'api.dart';
 import '../globals.dart';
+import '../routes.dart' as route;
 
 class SignInHttp extends StatefulWidget {
   @override
@@ -14,23 +15,7 @@ class SignInHttp extends StatefulWidget {
 
 class LogInRoute extends State<SignInHttp> {
   User formData = User();
-  void displayBottomSheet(BuildContext context) {
-    showModalBottomSheet<void>(
-        context: context,
-        isScrollControlled: true,
-        useRootNavigator: false,
-        isDismissible: false,
-        builder: (ctx) {
-          return Container(
-            color: Colors.white,
-            height: MediaQuery.of(context).size.height,
-            child: Center(
-              child: new Image.asset('assets/images/loader.gif',
-                  width: 100.0, height: 100.0),
-            ),
-          );
-        });
-  }
+
 
   final _formKey = GlobalKey<FormState>();
 
@@ -109,31 +94,7 @@ class LogInRoute extends State<SignInHttp> {
                             return null;
                           },
                           style: TextStyle(fontSize: 20.0),
-                          decoration:  InputDecoration(
-                            focusedBorder:  OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 1.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.grey, width: 1.0),
-                            ),
-                            border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.grey, width: 1.0),
-                            ),
-                            filled: true,
-                            contentPadding: EdgeInsets.all(0),
-                            fillColor: Colors.white,
-                            //labelText: 'Username or Email',
-                            hintText: 'Email',
-                            hintStyle:
-                                TextStyle(color: Colors.grey, fontSize: 20.0),
-                            labelStyle:
-                                TextStyle(color: Colors.grey, fontSize: 20.0),
-                            prefixIcon:
-                                Icon(Icons.alternate_email, color: Colors.grey),
-                          ),
+                            decoration:  TextInputDeco('Email'),
 
                         )),
                     SizedBox(
@@ -150,29 +111,7 @@ class LogInRoute extends State<SignInHttp> {
                             return null;
                           },
                           style: TextStyle(fontSize: 20.0),
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 1.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.grey, width: 1.0),
-                            ),
-                            border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.grey, width: 1.0),
-                            ),
-                            filled: true,
-                            contentPadding: EdgeInsets.all(0),
-                            fillColor: Colors.white,
-                            hintStyle:
-                                TextStyle(color: Colors.grey, fontSize: 20.0),
-                            labelStyle:
-                                TextStyle(color: Colors.grey, fontSize: 20.0),
-                            hintText: 'Password',
-                            prefixIcon: Icon(Icons.lock, color: Colors.grey),
-                          ),
+                         decoration:  TextInputDeco('Password'),
                           obscureText: true,
 
                         )),
@@ -186,7 +125,7 @@ class LogInRoute extends State<SignInHttp> {
                                     context,
                                     MaterialPageRoute<void>(
                                         builder: (context) =>
-                                            signup.SignUpHttp()),
+                                            route.ForgotRoute),
                                   );
                                 },
                                 child: Text(
@@ -211,12 +150,11 @@ class LogInRoute extends State<SignInHttp> {
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
                                 print('hello');
-                                displayBottomSheet(context);
                                 setState(() {
                                   _user_details =
                                        login(formData.email, formData.password);
                                 });
-                                await Future.delayed(
+                                await Future<void>.delayed(
                                     const Duration(seconds: 2));
 
                                await  _user_details.then((result) {
@@ -233,7 +171,7 @@ class LogInRoute extends State<SignInHttp> {
                                         context,
                                         MaterialPageRoute<void>(
                                             builder: (context) =>
-                                                main.HomeRoutes(0)),
+                                                route.HomePageRoute),
                                       );
 
                                   }
@@ -253,7 +191,7 @@ class LogInRoute extends State<SignInHttp> {
                                     context,
                                     MaterialPageRoute<void>(
                                         builder: (context) =>
-                                            signup.SignUpHttp()),
+                                            route.SignUpRoute),
                                   );
                                 },
                                 child: Text(

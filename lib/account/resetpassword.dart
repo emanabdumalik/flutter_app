@@ -4,31 +4,15 @@ import 'package:flutter/material.dart';
 import 'api.dart';
 import '../globals.dart';
 import '../preference.dart' as preference;
+import '../routes.dart' as route;
 
-class ForgotHttp extends StatefulWidget {
+class ResetHttp extends StatefulWidget {
   @override
   ForgotRoute createState() => ForgotRoute();
 }
 
-class ForgotRoute extends State<ForgotHttp> {
+class ForgotRoute extends State<ResetHttp> {
   User formData = User();
-  void displayBottomSheet(BuildContext context) {
-    showModalBottomSheet<void>(
-        context: context,
-        isScrollControlled: true,
-        useRootNavigator: false,
-        isDismissible: false,
-        builder: (ctx) {
-          return Container(
-            color: Colors.white,
-            height: MediaQuery.of(context).size.height,
-            child: Center(
-              child: new Image.asset('assets/images/loader.gif',
-                  width: 100.0, height: 100.0),
-            ),
-          );
-        });
-  }
 
   final _formKey = GlobalKey<FormState>();
 
@@ -128,12 +112,11 @@ class ForgotRoute extends State<ForgotHttp> {
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
                                 print('hello');
-                                displayBottomSheet(context);
                                 setState(() {
                                   _user_details =
                                       login(formData.email, formData.password);
                                 });
-                                await Future.delayed(
+                                await Future<void>.delayed(
                                     const Duration(seconds: 2));
 
                                 await  _user_details.then((result) {
@@ -150,7 +133,7 @@ class ForgotRoute extends State<ForgotHttp> {
                                       context,
                                       MaterialPageRoute<void>(
                                           builder: (context) =>
-                                              main.HomeRoutes(0)),
+                                              route.HomePageRoute),
                                     );
 
                                   }
@@ -170,7 +153,7 @@ class ForgotRoute extends State<ForgotHttp> {
                                     context,
                                     MaterialPageRoute<void>(
                                         builder: (context) =>
-                                            signup.SignUpHttp()),
+                                            route.SignUpRoute),
                                   );
                                 },
                                 child: Text(

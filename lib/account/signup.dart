@@ -6,6 +6,7 @@ import '../preference.dart' as preference;
 import '../main.dart' as main;
 import 'api.dart';
 import '../globals.dart';
+import '../routes.dart' as route;
 
 class SignUpHttp extends StatefulWidget {
 
@@ -30,23 +31,7 @@ class SignUpRoute extends State<SignUpHttp> {
     super.dispose();
   }
 
-  void displayBottomSheet(BuildContext context) {
-    showModalBottomSheet<void>(
-        context: context,
-        isScrollControlled: true,
-        useRootNavigator: false,
-        isDismissible: false,
-        builder: (ctx) {
-          return Container(
-            color: Colors.white,
-            height: MediaQuery.of(context).size.height,
-            child: Center(
-              child: new Image.asset('assets/images/loader.gif',
-                  width: 100.0, height: 100.0),
-            ),
-          );
-        });
-  }
+
 
 
   Future<ResponseParser> _user_details;
@@ -115,30 +100,7 @@ class SignUpRoute extends State<SignUpHttp> {
                                       return null;
                                     },
                                     style: TextStyle(fontSize: 20.0),
-                                    decoration: InputDecoration(
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.black, width: 1.0),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.grey, width: 1.0),
-                                      ),
-                                      prefixIcon: Icon(Icons.perm_identity,
-                                          color: Colors.grey),
-                                      contentPadding: EdgeInsets.all(0),
-                                      hintStyle: TextStyle(
-                                          color: Colors.grey, fontSize: 20.0),
-                                      labelStyle: TextStyle(
-                                          color: Colors.grey, fontSize: 20.0),
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.grey, width: 1.0),
-                                      ),
-                                      hintText: 'User Name',
-                                    ),
+                                   decoration:  TextInputDeco('Username'),
 
                                   )),
                               SizedBox(
@@ -155,29 +117,7 @@ class SignUpRoute extends State<SignUpHttp> {
                                       return null;
                                     },
                                     style: TextStyle(fontSize: 20.0),
-                                    decoration: InputDecoration(
-                                        filled: true,
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.black, width: 1.0),
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.grey, width: 1.0),
-                                        ),
-                                        contentPadding: EdgeInsets.all(0),
-                                        fillColor: Colors.white,
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.grey, width: 1.0),
-                                        ),
-                                        hintStyle: TextStyle(
-                                            color: Colors.grey, fontSize: 20.0),
-                                        labelStyle: TextStyle(
-                                            color: Colors.grey, fontSize: 20.0),
-                                        hintText: 'Email',
-                                        prefixIcon: Icon(Icons.alternate_email,
-                                            color: Colors.grey)),
+                                    decoration:  TextInputDeco('Email'),
 
                                   )),
                               SizedBox(
@@ -194,30 +134,7 @@ class SignUpRoute extends State<SignUpHttp> {
                                       return null;
                                     },
                                     style: TextStyle(fontSize: 20.0),
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.black, width: 1.0),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.grey, width: 1.0),
-                                      ),
-                                      contentPadding: EdgeInsets.all(0),
-                                      fillColor: Colors.white,
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.grey, width: 1.0),
-                                      ),
-                                      hintText: 'Password',
-                                      hintStyle: TextStyle(
-                                          color: Colors.grey, fontSize: 20.0),
-                                      labelStyle: TextStyle(
-                                          color: Colors.grey, fontSize: 20.0),
-                                      prefixIcon:
-                                          Icon(Icons.lock, color: Colors.grey),
-                                    ),
+                                    decoration:  TextInputDeco('Password'),
                                     obscureText: true,
 
                                   )),
@@ -240,12 +157,11 @@ class SignUpRoute extends State<SignUpHttp> {
                                       onPressed: () async {
                                         if (_formKey.currentState.validate()) {
                                           print('hello');
-                                          displayBottomSheet(context);
                                           setState(() {
                                             _user_details=  signup(formData.user_name,formData.email,formData.password);
 
                                           });
-                                          await  Future.delayed(const Duration(seconds: 2));
+                                          await  Future<void>.delayed(const Duration(seconds: 2));
 
                                           await _user_details.then((result){
                                             Navigator.pop(context);
@@ -264,7 +180,7 @@ class SignUpRoute extends State<SignUpHttp> {
                                                   context,
                                                   MaterialPageRoute<void>(
                                                       builder: (context) =>
-                                                          main.HomeRoutes(0)),
+                                                          route.VerifyRoute),
                                                 );
 
                                             }
@@ -282,7 +198,7 @@ class SignUpRoute extends State<SignUpHttp> {
                                               context,
                                               MaterialPageRoute<void>(
                                                   builder: (context) =>
-                                                      signin.SignInHttp()),
+                                                      route.SingInRoute),
                                             );
                                           },
                                           child: Text(

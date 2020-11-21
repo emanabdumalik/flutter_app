@@ -39,7 +39,7 @@ Future<ResponseParser> signup(String username,String email,String password) asyn
     url + 'remote-signup/signup',
     headers: headers,
     body: jsonEncode(<String, String>{
-      'first_name': username,
+      'user_name': username,
       'password': password,
       'email':email
     }),
@@ -63,6 +63,14 @@ Future<ResponseParser> reset_password() async {
 
 }
 Future<ResponseParser> verify() async {
+
+
+}
+Future<ResponseParser> verify_lostpassword() async {
+
+
+}
+Future<ResponseParser> DeleteAccont() async {
 
 
 }

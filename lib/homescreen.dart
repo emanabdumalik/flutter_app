@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'horse.dart' as horse;
-import 'equipment.dart' as equipment;
+
 import 'preference.dart' as preference;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,14 +29,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        horse.TitleItem('Horses'),
+                        /*horse.TitleItem('Horses'),
                         horse.HorseItem(),
                         horse.TitleItem('Horse Equipments'),
                         equipment.HorseEquipmentItem(),
                         horse.TitleItem('Endurance Horses'),
                         horse.HorseItem(),
                         horse.TitleItem('Show Horses'),
-                        horse.HorseItem()
+                        horse.HorseItem()*/
                       ],
                     )))));
   }

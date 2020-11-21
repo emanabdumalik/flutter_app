@@ -1,24 +1,14 @@
 import 'dart:convert';
 import 'dart:async';
 
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flappy_search_bar/flappy_search_bar.dart';
 
-import 'signup.dart' as signup;
-import 'signin.dart' as signin;
-import 'horse.dart' as horse;
-import 'equipment.dart' as equipment;
-import 'myprofile.dart' as myprofile;
-import 'splashscreen.dart' as splash;
-import 'homescreen.dart' as home;
 import 'globals.dart';
 import 'preference.dart' as preference;
-import 'steps.dart' as steps;
+import 'routes.dart' as route;
+
 void main() => runApp(MaterialApp(
-      home: new splash.SplashScreen(),
+      home: route.SplashRoute,
       routes: <String, WidgetBuilder>{
         '/HomeScreen': (BuildContext context) => new HomeRoutes(0)
       },
@@ -32,7 +22,7 @@ void main() => runApp(MaterialApp(
 
 Color bgColor = Color(0xFFF3F3F3);
 Color textColor = Color(0xFF83838A);
-
+/*
 List<String> imagePath = [
   "assets/images/intro1.png",
   "assets/images/intro2.png",
@@ -143,10 +133,10 @@ class _AppItroState extends State<AppItro> {
                       context,
                       MaterialPageRoute<void>(
                           builder: (context) => 0 == widget.index
-                              ? HomeRoutes(0)
+                              ? route.HomePageRoute
                               : 1 == widget.index
-                                  ? signup.SignUpHttp()
-                                  : signin.SignInHttp()),
+                                  ?  route.SignUpRoute
+                                  :  route.SignInRoute),
                     );
                   },
                 ),
@@ -222,7 +212,7 @@ class _DotsState extends State<Dots> {
     );
   }
 }
-
+*/
 class HomeRoutes extends StatefulWidget {
   int selectedPage = 0;
   HomeRoutes(this.selectedPage);
@@ -236,26 +226,12 @@ class _HomeState extends State<HomeRoutes> {
   @override
   void initState() {
     super.initState();
-    preference.MySharedPreferences.instance.getStringValue('isloggedin').then((value){
-      print(value);
-      print('hello');
-      if(value == 'no' || value == null){
-
-       persist('no');
-      }
-      setState(() {});
+    preference.MySharedPreferences.instance.getUserProfile().then((value){
+      user=value;
     });
 
   }
-  void persist(String value) {
-    setState(() {
-      _loggedin = value;
-    });
-    var x = {
-      'data': {'user_nicename': '', 'user_email': '', 'loggedIn': 'no'}
-    };
-    preference.MySharedPreferences.instance.setUserProfile(x);
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -266,9 +242,9 @@ class _HomeState extends State<HomeRoutes> {
           bottomNavigationBar: menu(),
           body: TabBarView(
             children: [
-              home.HomeScreen(),
-              LetsGo(_loggedin),
-              MyProfileListing(),
+              route.HomeScreenRoute,
+              CheckLogIn(_loggedin),
+              route.ProfileRoute
             ],
           ),
         ));
@@ -284,6 +260,7 @@ class _HomeState extends State<HomeRoutes> {
       ),
       child: TabBar(
         onTap: (index) {
+          print(index);
           setState(() {
             widget.selectedPage = index;
           });
@@ -303,9 +280,9 @@ class _HomeState extends State<HomeRoutes> {
   }
 }
 
-class LetsGo extends StatelessWidget {
+class CheckLogIn extends StatelessWidget {
   String _isloggedin;
-  LetsGo(this._isloggedin);
+  CheckLogIn(this._isloggedin);
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<dynamic>(
@@ -316,9 +293,9 @@ class LetsGo extends StatelessWidget {
           if (snapshot.hasData) {
             if (snapshot.data == 'yes') {
               print('hey');
-              return steps.MyApps();
+              return route.AddNewRoute;
             } else {
-              return signin.SignInHttp();
+              return route.SingInRoute;
             }
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
@@ -340,30 +317,23 @@ class LetsGo extends StatelessWidget {
 }
 
 Future fetchStr() async {
-  var x;
-  preference.MySharedPreferences.instance.getStringValue('isloggedin').then((value) {
+  User x;
+  await preference.MySharedPreferences.instance.getUserProfile().then((value) {
     x = value;
-    print(value);
+
 
   });
-  await new Future.delayed(const Duration(seconds: 1));
+  await new Future<void>.delayed(const Duration(seconds: 1));
 
   return x;
 }
-Future fetchProfile() async {
-  var x;
+/*Future fetchProfile() async {
+  User x;
   print('alloha');
-  await preference.MySharedPreferences.instance.getStringValue('isloggedin').then((value) {
+  await preference.MySharedPreferences.instance.getUserProfile().then((value) {
     x = value;
     print(value);
-    if(value == 'no' || value == ''){
-     x = new User(name:'semir',email:'semir',loggedIn:'no');
-    }
-    else {
-      preference.MySharedPreferences.instance.getUserProfile().then((value) {
-          x = value;
-      });
-      }
+
     });
 
 
@@ -383,11 +353,11 @@ class MyProfileListing extends StatelessWidget {
           print(snapshot);
           if (snapshot.hasData) {
 
-            if (snapshot.data.loggedIn == 'yes') {
+            if (snapshot.data.loggedin == 'yes') {
               print('hey');
-              return myprofile.MyProfileListingLoggedIn(snapshot.data);
+              return route.ProfileRoute;
             } else {
-              return myprofile.MyProfileListingLoggedIn(snapshot.data);
+              return route.ProfileRoute;
             }
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
@@ -406,7 +376,7 @@ class MyProfileListing extends StatelessWidget {
           );
         });
   }
-}
+}*/
 /*
  
                    

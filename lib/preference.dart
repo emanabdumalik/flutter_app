@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'globals.dart';
 
-
 class MySharedPreferences {
   MySharedPreferences._privateConstructor();
 
@@ -25,9 +24,9 @@ class MySharedPreferences {
 
   Future<User> getUserProfile() async {
     SharedPreferences shared_User = await SharedPreferences.getInstance();
-    dynamic userMap = jsonDecode(shared_User.getString('user')) ??  jsonDecode(jsonEncode(
-       {'user_name': '', 'email': '', 'logged_in': 'no'}
-    )) ;
+    dynamic user_default = new User();
+   dynamic userMap =  jsonDecode(shared_User.getString('user')) ??
+        jsonDecode(jsonEncode(user_default.toJson()));
     var user = User.fromJson(userMap);
     return user;
   }

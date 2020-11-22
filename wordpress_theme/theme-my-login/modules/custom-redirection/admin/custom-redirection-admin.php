@@ -82,12 +82,12 @@ class Theme_My_Login_Custom_Redirection_Admin extends Theme_My_Login_Abstract {
 		global $wp_roles;
 
 		add_submenu_page(
-			'theme_my_login',
+			'cptui_main_menu',
 			__( 'Theme My Login Custom Redirection Settings', 'theme-my-login' ),
 			__( 'Redirection', 'theme-my-login' ),
 			'manage_options',
 			$this->options_key,
-			array( $this, 'settings_page' )
+			array($this, 'settings_page' )
 		);
 
 		foreach ( $wp_roles->get_names() as $role => $role_name ) {
@@ -128,6 +128,7 @@ class Theme_My_Login_Custom_Redirection_Admin extends Theme_My_Login_Abstract {
 	 */
 	public function settings_page() {
 		global $current_screen;
+		echo $current_screen->id;
 		?>
 		<div class="wrap">
 			<h2><?php esc_html_e( 'Theme My Login Custom Redirection Settings', 'theme-my-login' ); ?></h2>
@@ -136,11 +137,11 @@ class Theme_My_Login_Custom_Redirection_Admin extends Theme_My_Login_Abstract {
 			<form method="post" action="options.php">
 				<?php
 				settings_fields( $this->options_key );
-				wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false );
-				wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false );
+			//	wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false );
+			//	wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false );
 				?>
 				<div id="<?php echo $this->options_key; ?>" class="metabox-holder">
-					<?php do_meta_boxes( $current_screen->id, 'normal', null ); ?>
+					<?php do_meta_boxes( 'tml_page_theme_my_login_redirection', 'normal', null ); ?>
 				</div>
 				<?php submit_button(); ?>
 			</form>

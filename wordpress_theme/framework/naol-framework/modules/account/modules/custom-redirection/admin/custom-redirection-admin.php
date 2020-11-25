@@ -82,7 +82,7 @@ class Theme_My_Login_Custom_Redirection_Admin extends Theme_My_Login_Abstract {
 		global $wp_roles;
 
 		add_submenu_page(
-			'cptui_main_menu',
+			'theme_my_login',
 			__( 'Theme My Login Custom Redirection Settings', 'theme-my-login' ),
 			__( 'Redirection', 'theme-my-login' ),
 			'manage_options',

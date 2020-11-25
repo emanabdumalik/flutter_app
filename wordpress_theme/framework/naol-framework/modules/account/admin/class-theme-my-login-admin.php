@@ -73,14 +73,14 @@ class Theme_My_Login_Admin extends Theme_My_Login_Abstract {
 		);
 
 		add_submenu_page(
-			'cptui_main_menu',
+			'theme_my_login',
 			__( 'General', 'theme-my-login' ),
 			__( 'General', 'theme-my-login' ),
 			'manage_options',
 			'theme_my_login',
 			array( 'Theme_My_Login_Admin', 'settings_page' )
 		);
-		remove_menu_page('theme_my_login','theme_my_login');
+		//remove_menu_page('theme_my_login','theme_my_login');
 	}
 
 	/**

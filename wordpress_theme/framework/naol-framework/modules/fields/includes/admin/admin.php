@@ -106,7 +106,7 @@ class ACF_Admin {
 		if( isset( $screen->post_type ) && $screen->post_type === 'acf-field-group' ) {
 			add_action( 'in_admin_header',		array( $this, 'in_admin_header' ) );
 			add_filter( 'admin_footer_text',	array( $this, 'admin_footer_text' ) );
-			//$this->setup_help_tab();
+			$this->setup_help_tab();
 		}
 	}
 

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Example formBuilder</title>
+</head>
+<body>
+  <div id="fb-editor"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+  <script src="https://formbuilder.online/assets/js/form-builder.min.js"></script>
+  <script>
+ jQuery(function($) {
+  var container = document.getElementById('fb-editor');
+  var fields = [{
+    label: 'Star Rating',
+    attrs: {
+      type: 'starRating'
+    },
+    icon: '🌟'
+  }];
+  var templates = {
+    starRating: function(fieldData) {
+      return {
+        field: '<span id="' + fieldData.name + '">',
+        onRender: function() {
+          $(document.getElementById(fieldData.name)).rateYo({
+            rating: 3.6
+          });
+        }
+      };
+    }
+  };
+  $(container).formBuilder({
+    templates,
+    fields
+  });
+});
+  </script>
+</body>

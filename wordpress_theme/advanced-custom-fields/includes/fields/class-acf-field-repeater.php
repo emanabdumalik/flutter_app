@@ -63,9 +63,10 @@ class acf_field_repeater extends acf_field {
 	*/
 	
 	function input_admin_enqueue_scripts() {
-		
-		wp_enqueue_script( 'acf-input-repeater', acf_get_external_dir(__FILE__, 'js/input.js'), array('acf-input'), '2.0.0' );
-		wp_enqueue_style( 'acf-input-repeater', acf_get_external_dir(__FILE__, 'css/input.css'), array('acf-input'), '2.0.0' );
+		$script = acf_get_url("assets/inc/repeater/input.js");
+		$style = acf_get_url("assets/inc/repeater/input.css");
+		wp_enqueue_script( 'acf-input-repeater', $script, array('acf-input'), '2.0.0' );
+		wp_enqueue_style( 'acf-input-repeater', $style, array('acf-input'), '2.0.0' );
 		
 	}
 	
@@ -84,8 +85,9 @@ class acf_field_repeater extends acf_field {
 	*/
 	
 	function field_group_admin_enqueue_scripts() {
-		
-		wp_enqueue_script( 'acf-field-group-repeater', acf_get_external_dir(__FILE__, 'js/field-group.js'), array('acf-field-group'), '2.0.0' );
+				$script = acf_get_url("assets/inc/repeater/field-group.js");
+
+		wp_enqueue_script( 'acf-field-group-repeater', $script, array('acf-field-group'), '2.0.0' );
 		
 	}
 	

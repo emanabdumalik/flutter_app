@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'signin.dart' as signin;
@@ -9,15 +8,12 @@ import '../globals.dart';
 import '../routes.dart' as route;
 
 class SignUpHttp extends StatefulWidget {
-
   @override
   SignUpRoute createState() => SignUpRoute();
 }
 
-
-
 class SignUpRoute extends State<SignUpHttp> {
-  User formData = User();
+  AccountData formData = AccountData();
   final _formKey = GlobalKey<FormState>();
   final username = new TextEditingController();
 
@@ -31,13 +27,19 @@ class SignUpRoute extends State<SignUpHttp> {
     super.dispose();
   }
 
-
-
-
+  bool _hasInputError;
+  bool _haschanged = false;
+  bool _hasPassInputError;
+  bool _haschangedPassword = false;
+  bool _passwordHidden = true;
+  String _passwordActionText = 'Show';
   Future<ResponseParser> _user_details;
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width * 1;
+    double widthPassRow = MediaQuery.of(context).size.width - 80.0;
+    double height = MediaQuery.of(context).size.height * 1;
     return Scaffold(
       appBar: AppBar(
         title: Text("Register An Account"),
@@ -65,157 +67,184 @@ class SignUpRoute extends State<SignUpHttp> {
 
         ],*/
       ),
-      body:  Container(
-          decoration:  BoxDecoration(
+      body: Container(
+          decoration: BoxDecoration(
             color: Colors.white,
           ),
           child: Center(
-            child:  Container(
+            child: Container(
               margin: EdgeInsets.only(top: 0),
               padding:
-              EdgeInsets.only(left: 40.0, right: 40.0, top: 15, bottom: 15),
-              width: MediaQuery.of(context).size.width * 1,
-              height: MediaQuery.of(context).size.height * 1,
-              decoration:  BoxDecoration(
+                  EdgeInsets.only(left: 40.0, right: 40.0, top: 15, bottom: 15),
+              width: width,
+              height: height,
+              decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               child: Form(
-                  key: _formKey,
+                key: _formKey,
 
-                  //padding: EdgeInsets.only(left: 40.0, right: 40.0,top:50),
-                  child:Column(
+                //padding: EdgeInsets.only(left: 40.0, right: 40.0,top:50),
+                child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                  SizedBox(
-                                  height: 60.0,
-                                  child: TextFormField(
-                                    controller:username,
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return 'User Name is Required';
-                                      }
-                                      setState(() {
-                                        formData.user_name = value;
-                                      });
-                                      return null;
-                                    },
-                                    style: TextStyle(fontSize: 20.0),
-                                   decoration:  TextInputDeco('Username'),
+                      SizedBox(
+                          height: 60.0,
+                          child: TextFormField(
+                            controller: username,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'User Name is Required';
+                              }
+                              setState(() {
+                                formData.user_name = value;
+                              });
+                              return null;
+                            },
+                            style: TextStyle(fontSize: 20.0),
+                            decoration: TextInputDeco('Username'),
+                          )),
+                      SizedBox(
+                          height: 40.0,
+                          child: TextFormField(
+                            //focusNode: focusNode,
+                            onChanged: (value) {
+                              if (value.isNotEmpty) {
+                                setState(() {
+                                  _haschanged = true;
+                                  formData.email = value;
+                                });
+                              }
+                            },
+                            controller: username,
+                            validator: (value) {
+                              if (!isEmail(value)) {
+                                return 'Email is no in correct format';
+                              }
 
-                                  )),
-                              SizedBox(
-                                  height: 60.0,
-                                  child: TextFormField(
-                                    controller:email,
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return 'Email is Required';
-                                      }
+                              return null;
+                            },
+                            style: TextStyle(fontSize: 20.0),
+                            decoration: TextInputDeco('Email'),
+                          )),
+                      SizedBox(
+                          height: 40.0,
+                          width: widthPassRow,
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                TextFormField(
+                                  controller: password,
+                                  //focusNode: focusNodePass,
+                                  onChanged: (value) {
+                                    if (value.isNotEmpty) {
                                       setState(() {
-                                        formData.email = value;
-                                      });
-                                      return null;
-                                    },
-                                    style: TextStyle(fontSize: 20.0),
-                                    decoration:  TextInputDeco('Email'),
-
-                                  )),
-                              SizedBox(
-                                  height: 60.0,
-                                  child: TextFormField(
-                                    controller:password,
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return 'Password is Required';
-                                      }
-                                      setState(() {
+                                        _haschangedPassword = true;
                                         formData.password = value;
                                       });
-                                      return null;
+                                    }
+                                  },
+                                  validator: (value) {
+                                    if (value.length < 3) {
+                                      return 'Password cannot be less that 4';
+                                    }
+
+                                    return null;
+                                  },
+                                  style: TextStyle(fontSize: 20.0),
+                                  decoration: TextInputDeco('Password'),
+                                  obscureText: _passwordHidden,
+                                ),
+                                GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        _passwordHidden = !_passwordHidden;
+                                        if (_passwordHidden) {
+                                          _passwordActionText = 'Show';
+                                        } else {
+                                          _passwordActionText = 'HIde';
+                                        }
+                                      });
                                     },
-                                    style: TextStyle(fontSize: 20.0),
-                                    decoration:  TextInputDeco('Password'),
-                                    obscureText: true,
+                                    child: Text(
+                                      _passwordActionText,
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 20.0),
+                                    ))
+                              ])),
+                      SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  side: BorderSide(color: Colors.grey)),
+                              color: Colors.white,
+                              child: Text(
+                                'Register',
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 20.0),
+                              ),
+                              onPressed: (formData.user_name.isNotEmpty &&
+                                      formData.email.isNotEmpty &&
+                                      formData.password.isNotEmpty)
+                                  ? () async {
+                                      if (_formKey.currentState.validate()) {
+                                        print('hello');
+                                        setState(() {
+                                          _user_details = signup(
+                                              formData.user_name,
+                                              formData.email,
+                                              formData.password);
+                                        });
+                                        await Future<void>.delayed(
+                                            const Duration(seconds: 2));
 
-                                  )),
+                                        await _user_details.then((result) {
+                                          if (result.statusCode == 200) {
+                                            preference
+                                                .MySharedPreferences.instance
+                                                .setUserProfile(result.user);
+                                            preference
+                                                .MySharedPreferences.instance
+                                                .setStringValue(
+                                                    "isloggedin", 'yes');
 
-                              SizedBox(
-                                  width: double.infinity,
-                                  height: 50,
-                                  child: RaisedButton(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          side: BorderSide(color: Colors.grey)),
-                                      color: Colors.white,
-                                      child: Text(
-                                        'Register',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 20.0),
-                                      ),
-                                      onPressed: () async {
-                                        if (_formKey.currentState.validate()) {
-                                          print('hello');
-                                          setState(() {
-                                            _user_details=  signup(formData.user_name,formData.email,formData.password);
-
-                                          });
-                                          await  Future<void>.delayed(const Duration(seconds: 2));
-
-                                          await _user_details.then((result){
-                                            Navigator.pop(context);
-
-                                            if (result.statusCode == 200) {
-                                              preference
-                                                  .MySharedPreferences.instance
-                                                  .setUserProfile(result.user);
-                                              preference
-                                                  .MySharedPreferences.instance
-                                                  .setStringValue(
-                                                  "isloggedin", 'yes');
-
-
-                                                Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute<void>(
-                                                      builder: (context) =>
-                                                          route.VerifyRoute),
-                                                );
-
-                                            }
-                                          });
-
-
-                                        }})),
-                              SizedBox(
-                                  width: double.infinity,
-                                  height: 20,
-                                  child: Center(
-                                      child: GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
+                                            Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute<void>(
                                                   builder: (context) =>
-                                                      route.SingInRoute),
+                                                      route.VerifyRoute),
                                             );
-                                          },
-                                          child: Text(
-                                            'I am already a Member',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 17.0),
-                                          )))),
-                          ]
-
-                        ),
-                      ),
-                    ),
-                  )),
+                                          }
+                                        });
+                                      }
+                                    }
+                                  : null)),
+                      SizedBox(
+                          width: double.infinity,
+                          height: 20,
+                          child: Center(
+                              child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute<void>(
+                                          builder: (context) =>
+                                              route.SingInRoute),
+                                    );
+                                  },
+                                  child: Text(
+                                    'I am already a Member',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 17.0),
+                                  )))),
+                    ]),
+              ),
+            ),
+          )),
     );
   }
 }
-
-

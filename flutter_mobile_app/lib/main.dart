@@ -14,6 +14,7 @@ void main() => runApp(MaterialApp(
       },
       theme: ThemeData(
         primaryColor: Colors.white,
+        fontFamily: 'Avenir',
       ),
       debugShowCheckedModeBanner: false,
       title: 'Horse App',
@@ -22,6 +23,7 @@ void main() => runApp(MaterialApp(
 
 Color bgColor = Color(0xFFF3F3F3);
 Color textColor = Color(0xFF83838A);
+
 /*
 List<String> imagePath = [
   "assets/images/intro1.png",
@@ -221,17 +223,15 @@ class HomeRoutes extends StatefulWidget {
 }
 
 class _HomeState extends State<HomeRoutes> {
-  String _loggedin='no';
+  String _loggedin = 'no';
   User user;
   @override
   void initState() {
     super.initState();
-    preference.MySharedPreferences.instance.getUserProfile().then((value){
-      user=value;
+    preference.MySharedPreferences.instance.getUserProfile().then((value) {
+      user = value;
     });
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -244,7 +244,7 @@ class _HomeState extends State<HomeRoutes> {
             children: [
               route.HomeScreenRoute,
               CheckLogIn(_loggedin),
-              route.ProfileRoute
+              route.ProfileRoute()
             ],
           ),
         ));
@@ -291,7 +291,7 @@ class CheckLogIn extends StatelessWidget {
           print(snapshot);
           print(_isloggedin);
           if (snapshot.hasData) {
-            if (snapshot.data == 'yes') {
+            if (snapshot.data.logged_in == 'yes') {
               print('hey');
               return route.AddNewRoute;
             } else {
@@ -320,8 +320,6 @@ Future fetchStr() async {
   User x;
   await preference.MySharedPreferences.instance.getUserProfile().then((value) {
     x = value;
-
-
   });
   await new Future<void>.delayed(const Duration(seconds: 1));
 

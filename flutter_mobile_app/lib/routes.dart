@@ -12,6 +12,8 @@ import "static_pages/contact_us.dart";
 import "main.dart";
 import 'splashscreen.dart';
 import 'homescreen.dart';
+import 'package:flutter/material.dart';
+
 
 import "globals.dart";
 
@@ -22,7 +24,7 @@ var SignUpRoute = SignUpHttp();
 var VerifyRoute =VerifyHttp();
 var ForgotRoute =ForgotHttp();
 var ResetRoute =ResetHttp();
-var ProfileRoute = MyProfileHttp();
+StatefulWidget ProfileRoute() => MyProfileHttp();
 var MyDetailsPageRoute = MyDetailsHttp();
 
 //Static Pages

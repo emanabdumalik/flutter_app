@@ -12,14 +12,12 @@ class ForgotHttp extends StatefulWidget {
 }
 
 class ForgotRoute extends State<ForgotHttp> {
-  User formData = User();
-
+  AccountData formData = AccountData();
 
   final _formKey = GlobalKey<FormState>();
 
   Future<ResponseParser> _user_details;
   final email = new TextEditingController();
-
 
   @override
   void dispose() {
@@ -54,13 +52,13 @@ class ForgotRoute extends State<ForgotHttp> {
         ],*/
       ),
       body: Center(
-          child:  Container(
+          child: Container(
               margin: EdgeInsets.only(top: 0),
-              padding:
-              EdgeInsets.only(left: 40.0, right: 40.0, top: 0.0, bottom: 0.0),
+              padding: EdgeInsets.only(
+                  left: 40.0, right: 40.0, top: 0.0, bottom: 0.0),
               width: MediaQuery.of(context).size.width * 1,
               height: MediaQuery.of(context).size.height * 1,
-              decoration:  BoxDecoration(
+              decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               child: Form(
@@ -79,22 +77,18 @@ class ForgotRoute extends State<ForgotHttp> {
                     SizedBox(
                         height: 60.0,
                         child: TextFormField(
-                          controller: email,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Email is Required';
-                            }
-                            setState(() {
-                              formData.email = value;
-                            });
-                            return null;
-                          },
-                          style: TextStyle(fontSize: 20.0),
-                          decoration:  TextInputDeco('Email')
-
-                        )),
-
-
+                            controller: email,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Email is Required';
+                              }
+                              setState(() {
+                                formData.email = value;
+                              });
+                              return null;
+                            },
+                            style: TextStyle(fontSize: 20.0),
+                            decoration: TextInputDeco('Email'))),
                     SizedBox(
                         width: double.infinity,
                         height: 50,
@@ -108,59 +102,38 @@ class ForgotRoute extends State<ForgotHttp> {
                               style: TextStyle(
                                   color: Colors.black, fontSize: 20.0),
                             ),
-                            onPressed: () async {
-                              if (_formKey.currentState.validate()) {
-                                print('hello');
-                                setState(() {
-                                  _user_details =
-                                      login(formData.email, formData.password);
-                                });
-                                await Future<void>.delayed(
-                                    const Duration(seconds: 2));
+                            onPressed: (formData.email.isNotEmpty)
+                                ? () async {
+                                    if (_formKey.currentState.validate()) {
+                                      print('hello');
+                                      setState(() {
+                                        _user_details = forgot_password(
+                                            formData.email, context);
+                                      });
+                                      await Future<void>.delayed(
+                                          const Duration(seconds: 2));
 
-                                await  _user_details.then((result) {
-                                  Navigator.pop(context);
+                                      await _user_details.then((result) {
+                                        if (result.statusCode == 200) {
+                                          preference
+                                              .MySharedPreferences.instance
+                                              .setUserProfile(result.user);
+                                          preference
+                                              .MySharedPreferences.instance
+                                              .setStringValue(
+                                                  "isloggedin", 'yes');
 
-                                  if (result.statusCode == 200) {
-                                    preference.MySharedPreferences.instance
-                                        .setUserProfile(result.user);
-                                    preference.MySharedPreferences.instance
-                                        .setStringValue("isloggedin", 'yes');
-
-
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute<void>(
-                                          builder: (context) =>
-                                              route.VerifyRoute),
-                                    );
-
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute<void>(
+                                                builder: (context) =>
+                                                    route.VerifyRoute),
+                                          );
+                                        }
+                                      });
+                                    }
                                   }
-                                });
-                              }
-                            })),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
-                        width: double.infinity,
-                        height: 20,
-                        child: Center(
-                            child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute<void>(
-                                        builder: (context) =>
-                                            route.SignUpRoute),
-                                  );
-                                },
-                                child: Text(
-                                  'Don\'t have an account? Register',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 17.0),
-                                )))),
+                                : null)),
                   ],
                 ),
               ))),

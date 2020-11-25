@@ -5,6 +5,29 @@ import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 
 @JsonSerializable()
+class AccountData {
+  String email;
+  String user_name;
+
+  String password;
+
+  AccountData({
+    this.email,
+    this.password,
+    this.user_name,
+  });
+
+  Map<String, dynamic> toJson() => _$AccountDataToJson(this);
+}
+
+Map<String, dynamic> _$AccountDataToJson(AccountData instance) =>
+    <String, dynamic>{
+      'email': instance.email,
+      'password': instance.password,
+      'user_name': instance.user_name,
+    };
+
+@JsonSerializable()
 class User {
   String profile_pic;
   String user_name;
@@ -41,8 +64,7 @@ class User {
       this.token,
       this.password_reset_state});
 
-  factory User.fromJson(dynamic parsedJson) =>
-      _$UserFromJson(parsedJson);
+  factory User.fromJson(dynamic parsedJson) => _$UserFromJson(parsedJson);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }
@@ -214,6 +236,8 @@ List<String> Gender = <String>[];
 // Input Default Style
 InputDecoration TextInputDeco(String label) {
   return InputDecoration(
+    helperText: ' ',
+    // errorText:"Your error message",
     focusedBorder: OutlineInputBorder(
       borderSide: BorderSide(color: Colors.black, width: 1.0),
     ),
@@ -226,7 +250,7 @@ InputDecoration TextInputDeco(String label) {
     filled: true,
     contentPadding: EdgeInsets.only(left: 10.0),
     fillColor: Colors.white,
-    //labelText: 'Username or Email',
+    // labelText: 'Username or Email',
     hintText: label,
     hintStyle: TextStyle(color: Colors.grey, fontSize: 20.0),
     labelStyle: TextStyle(color: Colors.grey, fontSize: 20.0),
@@ -499,9 +523,10 @@ class FloatAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
-FloatingActionButton floatingActionButton(BuildContext context,String page,Icon icon){
-  return FloatingActionButton(
 
+FloatingActionButton floatingActionButton(
+    BuildContext context, String page, Icon icon) {
+  return FloatingActionButton(
     child: icon,
     onPressed: () {
       Navigator.of(context).pushReplacementNamed(page);
@@ -509,12 +534,14 @@ FloatingActionButton floatingActionButton(BuildContext context,String page,Icon 
     },
   );
 }
+
 class Choice {
   const Choice({this.title, this.icon});
 
   final String title;
   final IconData icon;
 }
+
 class ChoiceCard extends StatelessWidget {
   const ChoiceCard({Key key, this.choice}) : super(key: key);
 
@@ -537,26 +564,26 @@ class ChoiceCard extends StatelessWidget {
     );
   }
 }
-PopupMenuButton popupMenuButton(BuildContext context,State widget,Choice _selectedChoice,List<Choice> choices,Icon icon){
 
+PopupMenuButton popupMenuButton(BuildContext context, State widget,
+    Choice _selectedChoice, List<Choice> choices, Icon icon) {
   void _select(Choice choice) {
     // Causes the app to rebuild with the new _selectedChoice.
     widget.setState(() {
       _selectedChoice = choice;
     });
   }
+
   return PopupMenuButton<Choice>(
-    icon: icon,
-    onSelected: _select,
-    itemBuilder: (BuildContext context) {
-      return choices.map((Choice choice) {
-        return PopupMenuItem<Choice>(
-            value: choice,
-            child: ChoiceCard(choice: choice));
-            //child: Text(choice.title));
-      }).toList();
-    }
-  );
+      icon: icon,
+      onSelected: _select,
+      itemBuilder: (BuildContext context) {
+        return choices.map((Choice choice) {
+          return PopupMenuItem<Choice>(
+              value: choice, child: ChoiceCard(choice: choice));
+          //child: Text(choice.title));
+        }).toList();
+      });
 }
 
 /*
@@ -635,3 +662,12 @@ class Search extends SearchDelegate<void> {
   }
 }
  */
+
+bool isEmail(String em) {
+  String p =
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+
+  RegExp regExp = new RegExp(p);
+
+  return regExp.hasMatch(em);
+}

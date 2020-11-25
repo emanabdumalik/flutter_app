@@ -6,20 +6,19 @@ import '../globals.dart';
 import '../preference.dart' as preference;
 import 'package:pin_entry_text_field/pin_entry_text_field.dart';
 import '../routes.dart' as route;
+
 class VerifyHttp extends StatefulWidget {
   @override
   ForgotRoute createState() => ForgotRoute();
 }
 
 class ForgotRoute extends State<VerifyHttp> {
-  User formData = User();
-
+  AccountData formData = AccountData();
 
   final _formKey = GlobalKey<FormState>();
 
   Future<ResponseParser> _user_details;
   final email = new TextEditingController();
-
 
   @override
   void dispose() {
@@ -54,13 +53,13 @@ class ForgotRoute extends State<VerifyHttp> {
         ],*/
       ),
       body: Center(
-          child:  Container(
+          child: Container(
               margin: EdgeInsets.only(top: 0),
-              padding:
-              EdgeInsets.only(left: 40.0, right: 40.0, top: 0.0, bottom: 0.0),
+              padding: EdgeInsets.only(
+                  left: 40.0, right: 40.0, top: 0.0, bottom: 0.0),
               width: MediaQuery.of(context).size.width * 1,
               height: MediaQuery.of(context).size.height * 1,
-              decoration:  BoxDecoration(
+              decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               child: Form(
@@ -77,15 +76,14 @@ class ForgotRoute extends State<VerifyHttp> {
                         style: TextStyle(color: Colors.grey, fontSize: 20.0),
                       )),*/
                     SizedBox(
-                        height: 60.0,
-                        child: PinEntryTextField(
-                            fields:6,
-                            showFieldAsBox:true,
-                          onSubmit: (String pin){
-                                print(pin);
-                          }, // end onSubmit
-                        ),
-
+                      height: 60.0,
+                      child: PinEntryTextField(
+                        fields: 6,
+                        showFieldAsBox: true,
+                        onSubmit: (String pin) {
+                          print(pin);
+                        }, // end onSubmit
+                      ),
                     ),
                     SizedBox(
                         width: double.infinity,
@@ -104,13 +102,13 @@ class ForgotRoute extends State<VerifyHttp> {
                               if (_formKey.currentState.validate()) {
                                 print('hello');
                                 setState(() {
-                                  _user_details =
-                                      login(formData.email, formData.password);
+                                  _user_details = login(formData.email,
+                                      formData.password, context);
                                 });
                                 await Future<void>.delayed(
                                     const Duration(seconds: 2));
 
-                                await  _user_details.then((result) {
+                                await _user_details.then((result) {
                                   Navigator.pop(context);
 
                                   if (result.statusCode == 200) {
@@ -119,40 +117,16 @@ class ForgotRoute extends State<VerifyHttp> {
                                     preference.MySharedPreferences.instance
                                         .setStringValue("isloggedin", 'yes');
 
-
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute<void>(
                                           builder: (context) =>
                                               route.HomePageRoute),
                                     );
-
                                   }
                                 });
                               }
                             })),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
-                        width: double.infinity,
-                        height: 20,
-                        child: Center(
-                            child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute<void>(
-                                        builder: (context) =>
-                                            route.SignUpRoute),
-                                  );
-                                },
-                                child: Text(
-                                  'Don\'t have an account? Register',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 17.0),
-                                )))),
                   ],
                 ),
               ))),

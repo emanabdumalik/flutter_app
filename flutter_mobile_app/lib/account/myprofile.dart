@@ -1,6 +1,4 @@
-
 import 'package:flutter/material.dart';
-
 
 import '../preference.dart' as preference;
 
@@ -14,16 +12,27 @@ class MyProfileHttp extends StatefulWidget {
 
 class MyProfileListing extends State<MyProfileHttp> {
   User user;
+  Future getUserInfo() async {
+    User x;
+    await preference.MySharedPreferences.instance
+        .getUserProfile()
+        .then((value) {
+      user = value;
+      print(user.logged_in);
+
+      setState(() {});
+      //user = value;
+    });
+    // await new Future<void>.delayed(const Duration(seconds: 1));
+
+    return user;
+  }
+
   @override
   void initState() {
     super.initState();
-    preference.MySharedPreferences.instance.getUserProfile().then((value){
-      user = value;
-    });
-
+    getUserInfo();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -41,38 +50,46 @@ class MyProfileListing extends State<MyProfileHttp> {
                 height: MediaQuery.of(context).size.height,
                 child: ListView(
                   children: <Widget>[
-                    user.logged_in == 'yes'
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          new Image.asset(
+                            'assets/images/logomain.png',
+                            width: 100,
+                            height: 100,
+                            fit: BoxFit.contain,
+                          )
+                        ]),
+                    (user != null && user.logged_in)
                         ? ListTile(
-                      title: Text(user.user_name,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 25.0)),
-                    )
+                            title: Text(user.user_name,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 25.0)),
+                          )
                         : Text(''),
                     Divider(),
-                    user.logged_in != 'yes'
+                    (user != null && user.logged_in == false)
                         ? ListTile(
-                        leading: Icon(Icons.chevron_right),
-                        title: Text('Log In or Sign Up'),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute<void>(
-                                builder: (context) => route.SingInRoute),
-                          );
-                        })
+                            leading: Icon(Icons.login),
+                            title: Text('Log In or Sign Up'),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute<void>(
+                                    builder: (context) => route.SingInRoute),
+                              );
+                            })
                         : Text(''),
                     ListTile(
                         leading: Icon(Icons.book),
                         title: Text('My Ads'),
-                        onTap: () {
-
-                        }),
+                        onTap: () {}),
                     ListTile(
                       leading: Icon(Icons.search),
-                      title: Text('My Searches'),
+                      title: Text('My Saved Searches'),
                     ),
                     ListTile(
-                      leading: Icon(Icons.list),
+                      leading: Icon(Icons.favorite),
                       title: Text('My Favorites'),
                     ),
                     Divider(),
@@ -80,33 +97,35 @@ class MyProfileListing extends State<MyProfileHttp> {
                       title: Text('Settings'),
                     ),
                     Divider(),
-                    user.logged_in == 'yes'
+                    (user != null && user.logged_in)
                         ? ListTile(
-                        leading: Icon(Icons.person),
-                        title: Text('My Profile'),
-                        onTap: () {
-                          print('hello');
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute<void>(
-                                builder: (context) =>
-                                route.MyDetailsPageRoute),
-                          );
-                        })
+                            leading: Icon(Icons.person),
+                            title: Text('My Profile'),
+                            onTap: () {
+                              print('hello');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute<void>(
+                                    builder: (context) =>
+                                        route.MyDetailsPageRoute),
+                              );
+                            })
                         : Text(''),
                     ListTile(
-                        leading: Icon(Icons.email),
-                        title: Text('Contact'),
+                      leading: Icon(Icons.location_city),
+                      title: Text('City'),
+                    ),
+                    ListTile(
+                        leading: Icon(Icons.forum),
+                        title: Text('Support'),
                         onTap: () {
                           print('hello');
                           Navigator.push(
                               context,
                               MaterialPageRoute<void>(
-                              builder: (context) =>
-                          route.ContactRoute,
-                          ));
-                        }
-                    ),
+                                builder: (context) => route.ContactRoute,
+                              ));
+                        }),
                     ListTile(
                         leading: Icon(Icons.info),
                         title: Text('Terms and Conditions'),
@@ -115,11 +134,9 @@ class MyProfileListing extends State<MyProfileHttp> {
                           Navigator.push(
                             context,
                             MaterialPageRoute<void>(
-                                builder: (context) =>
-                                route.TermsRoute),
+                                builder: (context) => route.TermsRoute),
                           );
-                        }
-                    ),
+                        }),
                     ListTile(
                         leading: Icon(Icons.apps),
                         title: Text('About'),
@@ -128,36 +145,14 @@ class MyProfileListing extends State<MyProfileHttp> {
                           Navigator.push(
                               context,
                               MaterialPageRoute<void>(
-                              builder: (context) =>
-                          route.AboutRoute,
-                          ));
-                        }
-                    ),
-                    user.logged_in == 'yes'
+                                builder: (context) => route.AboutRoute,
+                              ));
+                        }),
+                    (user != null && user.logged_in)
                         ? ListTile(
-                        leading: Icon(Icons.chevron_left),
-                        title: Text('Log Out'),
-                        onTap: () {
-                          var x = {
-                            'data': {
-                              'user_nicename': '',
-                              'user_email': '',
-                              'loggedIn': 'no'
-                            }
-                          };
-                          preference.MySharedPreferences.instance
-                              .setUserProfile(x);
-                          preference
-                              .MySharedPreferences.instance
-                              .setStringValue(
-                              "isloggedin", 'no');
-                          print('hello');
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute<void>(
-                                builder: (context) => route.HomePageRoute),
-                          );
-                        })
+                            leading: Icon(Icons.logout),
+                            title: Text('Log Out'),
+                            onTap: () {})
                         : Text(''),
                   ],
                 ),

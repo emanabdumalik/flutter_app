@@ -25,6 +25,7 @@ class MySharedPreferences {
   Future<User> getUserProfile() async {
     SharedPreferences shared_User = await SharedPreferences.getInstance();
     User user_default = new User();
+    print(user_default);
    String userMap =  shared_User.getString('user') ?? '';
    if(userMap == '' || userMap == null){
      return user_default;

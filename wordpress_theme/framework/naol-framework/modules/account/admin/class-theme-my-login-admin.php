@@ -65,8 +65,8 @@ class Theme_My_Login_Admin extends Theme_My_Login_Abstract {
 	 */
 	public function admin_menu() {
 		add_menu_page(
-			__( 'Theme My Login Settings', 'theme-my-login' ),
-			__( 'TML', 'theme-my-login' ),
+			__( 'Account', 'theme-my-login' ),
+			__( 'Account', 'theme-my-login' ),
 			'manage_options',
 			'theme_my_login'
 			//array( 'Theme_My_Login_Admin', 'settings_page' )

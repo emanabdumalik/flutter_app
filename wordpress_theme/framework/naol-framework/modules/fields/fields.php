@@ -262,6 +262,7 @@ class ACF {
 		acf_include('includes/fields/class-acf-field-tab.php');
 		acf_include('includes/fields/class-acf-field-group.php');
 		acf_include('includes/fields/class-acf-field-repeater.php');
+		acf_include('includes/fields/class-acf-field-post-type-select.php');
 		/**
 		 * Fires after field types have been included.
 		 *

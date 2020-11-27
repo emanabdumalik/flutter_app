@@ -151,7 +151,7 @@ class Theme_My_Login_Custom_User_Links_Admin extends Theme_My_Login_Abstract {
 				wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false );
 				?>
 				<div id="<?php echo $this->options_key; ?>" class="metabox-holder">
-					<?php do_meta_boxes( $current_screen->id, 'normal', null ); ?>
+					<?php do_meta_boxes( 'tml_page_' . $this->options_key, 'normal', null ); ?>
 				</div>
 				<?php submit_button(); ?>
 			</form>

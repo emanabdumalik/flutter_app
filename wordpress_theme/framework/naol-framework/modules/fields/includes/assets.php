@@ -106,7 +106,7 @@ class ACF_Assets {
 	public function register_scripts() {
 		
 		// Extract vars.
-		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
+		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '';
 		$version = acf_get_setting('version');
 		
 		// Register scripts.

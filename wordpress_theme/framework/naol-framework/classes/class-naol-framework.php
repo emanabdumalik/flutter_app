@@ -109,7 +109,7 @@ class NaolFramework
             "labels"              => $labels,
             "description"         => "",
             "public"              => false,
-            "publicly_queryable"  => true,
+           
             "show_ui"             => true,
 
             "has_archive"         => false,
@@ -119,7 +119,7 @@ class NaolFramework
             "show_in_nav_menus"   => true,
             "delete_with_user"    => false,
             "exclude_from_search" => true,
-            "map_meta_cap"        => true,
+           // "map_meta_cap"        => true,
             '_builtin'            => false,
             "capability_type"     => "post",
             "hierarchical"        => false,
@@ -157,7 +157,7 @@ class NaolFramework
             "exclude_from_search"   => true,
             "capability_type"       => "post",
             'capabilities'          => array(
-                'create_posts' => 'do_not_allow',
+                //'create_posts' => 'do_not_allow',
             ),
             "map_meta_cap"          => true,
             "hierarchical"          => false,
@@ -280,7 +280,8 @@ class NaolFramework
             'fields',
             'account',
             'builder',
-            'widgets'
+            'widgets',
+            'options-page'
 
         );
 

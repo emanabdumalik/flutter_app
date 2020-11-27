@@ -1399,7 +1399,111 @@
 	acf.registerFieldType( Field );
 	
 })(jQuery);
+(function($, undefined){
+	
+	var Field = acf.Field.extend({
+		
+		type: 'post_type_select',
+		
+		
+		
+		$control: function(){
+			return this.$('.acf-post-type-select');
+		},
+		
+		$input: function(){
+			return this.$('input[type="hidden"]');
+		},
+		
+		$inputText: function(){
+			return this.$('input[type="text"]');
+		},
+				
+		initialize: function(){
+			//alert(this);
+			console.log(this);
+			// save_format: compatibility with ACF < 5.0.0
+		
+			
+		},
+		
 
+		
+		onBlur: function(){
+		
+		},
+		
+		onDuplicate: function( e, $el, $duplicate ){
+		}
+	});
+	
+	acf.registerFieldType( Field );
+	
+	
+
+	
+})(jQuery);
+(function($, undefined){
+	
+	var Field = acf.Field.extend({
+		
+		type: 'form_builder',
+		
+		
+		
+		$control: function(){
+			return this.$('.acf-form-builder');
+		},
+		
+		$input: function(){
+			return this.$('input[type="hidden"]');
+		},
+		
+		$inputText: function(){
+			return this.$('input[type="text"].input');
+		},
+				
+		initialize: function(){
+			console.log(this);
+			var self=this;
+			//alert(this);
+			let q = this.get('id');
+const options = {
+  onAddField: function(fieldId) {
+  	const dataType = 'json';var res = self.form_builder.actions.getData('json');
+  // alert();
+   //self.$inputText().val(res);
+   acf.val( self.$input(), res );
+  },
+}
+//$(container).formBuilder(options)
+			this.form_builder = $('#'+q).formBuilder(options);
+			setTimeout(function(){self.form_builder.actions.setData(self.$input().val());},1000);
+			
+	//const dataType = 'json';
+//this.form_builder.formBuilder('getData', dataType);
+
+			// save_format: compatibility with ACF < 5.0.0
+		
+			
+		},
+		
+
+		
+		onBlur: function(){
+		
+		},
+		
+		onDuplicate: function( e, $el, $duplicate ){
+		}
+	});
+	
+	acf.registerFieldType( Field );
+	
+	
+
+	
+})(jQuery);
 (function($, undefined){
 	
 	var Field = acf.Field.extend({
@@ -1424,7 +1528,8 @@
 		},
 				
 		initialize: function(){
-			
+			//alert(this);
+			console.log(this);
 			// save_format: compatibility with ACF < 5.0.0
 			if( this.has('save_format') ) {
 				return this.initializeCompatibility();

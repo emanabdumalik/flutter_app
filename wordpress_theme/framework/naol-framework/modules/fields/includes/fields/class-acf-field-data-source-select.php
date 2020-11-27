@@ -1,8 +1,8 @@
 <?php
 
-if (!class_exists('acf_field_post_type_select')):
+if (!class_exists('acf_field_data_source_select')):
 
-    class acf_field_post_type_select extends acf_field
+    class acf_field_data_source_select extends acf_field
 {
 
         /*
@@ -24,8 +24,8 @@ if (!class_exists('acf_field_post_type_select')):
             // Return array of [type => label].
             $choices = array();
             // vars
-            $this->name     = 'post_type_select';
-            $this->label    = _x('Post Type Select', 'noun', 'acf');
+            $this->name     = 'data_source_select';
+            $this->label    = _x('Data Source Select', 'noun', 'acf');
             $this->category = 'choice';
             $this->defaults = array(
                 'multiple'      => 0,
@@ -247,7 +247,10 @@ if (!class_exists('acf_field_post_type_select')):
             // convert
             $value   = acf_get_array($field['value']);
             $choices = acf_get_array($field['choices']);
-           
+            $data_source = $field['data_source'];
+
+
+          
             // placeholder
             if (empty($field['placeholder'])) {
                 $field['placeholder'] = _x('Select', 'verb', 'acf');
@@ -327,8 +330,17 @@ if (!class_exists('acf_field_post_type_select')):
                 'exclude' => array('attachment'),
             ));
 
+
+            $data = get_field('selection_list', $data_source, true);
+          //  echo $data;
+             $choices = array();
+
+         
+            foreach ($data as $d) {
+                $choices[$d['value']] = $d['label'];
+            }
             // Return array of [type => label].
-            $choices = acf_get_pretty_post_types($post_types);
+            //$choices = acf_get_pretty_post_types($post_types);
 
             // append
             $select['value']   = $value;
@@ -358,21 +370,37 @@ if (!class_exists('acf_field_post_type_select')):
             // encode choices (convert from array)
             $field['choices']       = acf_encode_choices($field['choices'], true);
             $field['default_value'] = acf_encode_choices($field['default_value'], false);
-            $field['data_source']=$field['data_source'];
+            $field['data_source'] = $field['data_source'];
             // choices
 
-           
+            $ch = array();
+
+            $posts = acf_get_posts(array(
+                'post__in'  => null,
+                'post_type' => 'data_source',
+            ));
+            foreach ($posts as $post) {
+                $ch[$post->ID] = $post->post_title;
+            }
 
             // default_value
+          
+
             acf_render_field_setting($field, array(
+                'label'        => __('Data Source Value', 'acf'),
+                'instructions' => __('Enter each default value on a new line', 'acf'),
+                'name'         => 'data_source',
+                'required'=>true,
+                'type'         => 'select',
+                 'choices'   => $ch,
+            ));
+              acf_render_field_setting($field, array(
                 'label'        => __('Default Value', 'acf'),
                 'instructions' => __('Enter each default value on a new line', 'acf'),
                 'name'         => 'default_value',
                 'type'         => 'text',
-                'value'        => 'post',
+               
             ));
-
-          
             // allow_null
             acf_render_field_setting($field, array(
                 'label'        => __('Allow Null?', 'acf'),
@@ -613,6 +641,6 @@ if (!class_exists('acf_field_post_type_select')):
 }
 
 // initialize
-acf_register_field_type('acf_field_post_type_select');
+acf_register_field_type('acf_field_data_source_select');
 
 endif; // class_exists check

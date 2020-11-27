@@ -632,6 +632,7 @@ class SiteOrigin_Panels {
 	 * @return bool
 	 */
 	public static function display_premium_teaser(){
+		return false;
 		return siteorigin_panels_setting( 'display-teaser' ) &&
 			   apply_filters( 'siteorigin_premium_upgrade_teaser', true ) &&
 			   ! defined( 'SITEORIGIN_PREMIUM_VERSION' );

@@ -102,8 +102,12 @@ class SiteOrigin_Panels_Widgets_Layout extends WP_Widget {
 		if( ! is_string( $instance['panels_data'] ) ) {
 			$instance['panels_data'] = json_encode( $instance['panels_data'] );
 		}
+add_filter( 'siteorigin_panels_widget_dialog_tabs',function($data){
 
-		$builder_supports = apply_filters( 'siteorigin_panels_layout_builder_supports', array(), $instance['panels_data'] );
+return $data[0];
+});
+		$builder_supports = apply_filters( 'siteorigin_panels_layout_builder_supports', array('addRow'=>false,'prebuilt'=>false), $instance['panels_data'] );
+		//$builder_supports = apply_filters( 'siteorigin_panels_builder_supports', array('addRow'=>false) );
 		?>
 		<div class="siteorigin-page-builder-widget" id="siteorigin-page-builder-widget-<?php echo esc_attr( $form_id ) ?>"
 			data-builder-id="<?php echo esc_attr( $form_id ) ?>"

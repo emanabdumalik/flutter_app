@@ -544,7 +544,7 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 	function display_teaser_message(){
 		if(
 			method_exists( $this, 'get_form_teaser' ) &&
-			( $teaser = $this->get_form_teaser() )
+			( $teaser = $this->get_form_teaser() ) && 1==0
 		) {
 			if ( ! is_admin() ) {
 				wp_enqueue_style( 'dashicons' );
@@ -560,7 +560,7 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 
 				?>
 				<div class="siteorigin-widget-teaser">
-					<?php echo wp_kses_post( $teaser ) ?>
+					<?php //echo wp_kses_post( $teaser ) ?>
 					<span class="dashicons dashicons-dismiss" data-dismiss-url="<?php echo esc_url( $dismiss_url ) ?>"></span>
 				</div>
 				<?php

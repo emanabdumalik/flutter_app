@@ -49,7 +49,7 @@ if (!class_exists('acf_field_form_builder')):
             // bail ealry if no enqueue
 
             // script
-    	echo 'hello';
+    	//echo 'hello';
 
             //wp_enqueue_script('jquery');
            // wp_enqueue_script('jquery-ui');

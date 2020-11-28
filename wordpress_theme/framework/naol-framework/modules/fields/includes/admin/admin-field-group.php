@@ -838,5 +838,39 @@ class acf_admin_field_group {
 new acf_admin_field_group();
 
 endif;
+if( ! function_exists('get_acf_field_groups') ) :
+
+function get_acf_field_groups($post_type) {
+	$built_in = array('group_553b825363a7d', 'group_553b6f6e9891b', 'group_552fbd209f99e', 'group_552bd329a6457');
+	$output = array();
+acf_get_field_groups();
+	
+
+	$groups =acf_get_field_groups();
+
+ $post_id = get_the_ID();
+    $fields = get_field_objects($post_id);
+	if($groups) {
+		foreach($groups as $group) {
+			if(in_array($group->post_name, $built_in))
+				continue;
+
+			$cond = unserialize($group->post_content);
+
+			if($cond) {
+				foreach($cond['location'][0] as $location) {
+					if('post_type' == $location['param'] && '==' == $location['operator'] && $post_type == $location['value']) {
+						$fields = get_acf_fields_by_group($group->ID); // ... searching for a function like this
+      					$output[$group->ID] = $fields;
+      				}
+				} 
+			}
+				
+		}
+	}
+
+	return $output;
+}
+endif;
 
 ?>

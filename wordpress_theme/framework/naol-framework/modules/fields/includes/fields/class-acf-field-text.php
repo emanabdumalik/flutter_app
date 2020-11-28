@@ -48,7 +48,6 @@ class acf_field_text extends acf_field {
 	
 	function render_field( $field ) {
 		$html = '';
-		
 		// Prepend text.
 		if( $field['prepend'] !== '' ) {
 			$field['class'] .= ' acf-is-prepended';

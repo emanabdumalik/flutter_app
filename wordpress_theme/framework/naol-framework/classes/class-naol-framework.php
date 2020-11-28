@@ -17,9 +17,50 @@ class NaolFramework
         add_action('plugins_loaded', array($this, 'load_modules'), 1);
 
         add_action('init', array($this, 'load_custom_post_types'));
+        add_action('wp_head', array($this, 'replace_sidebars'));
+        add_action('widgets_init', array($this, 'register_custom_sidebars'));
 
     }
+    public function register_custom_sidebars()
+    {
+        $posts = acf_get_posts(array(
+            'post__in'  => null,
+            'post_type' => 'sidebar',
+        ));
+        foreach ($posts as $post) {
+            register_sidebar(
+                array(
+                    'name'          => __($post->post_title, 'twentyseventeen'),
+                    'id'            => get_field('sidebar_id', $post->ID, true),
+                    'description'   => __('Add widgets here to appear in your sidebar on blog posts and archive pages.', 'twentyseventeen'),
+                    'before_widget' => '<section id="%1$s" class="widget %2$s">',
+                    'after_widget'  => '</section>',
+                    'before_title'  => '<h2 class="widget-title">',
+                    'after_title'   => '</h2>',
+                )
+            );
 
+        }
+    }
+
+    public function replace_sidebars()
+    {
+        global $_wp_sidebars_widgets, $wp_registered_sidebars, $wp_registered_widgets;
+
+        $posts = acf_get_posts(array(
+            'post__in'  => null,
+            'post_type' => 'sidebar',
+        ));
+        foreach ($posts as $post) {
+            $original                        = get_field('sidebar_to_replace', $post->ID, true);
+            $new_sidebar                     = get_field('sidebar_id', $post->ID, true);
+            $_wp_sidebars_widgets[$original] = $_wp_sidebars_widgets[$new_sidebar];
+        }
+        // print_r($wp_registered_sidebars);
+
+        //  print_r($wp_registered_widgets);
+
+    }
     public function load_custom_post_types()
     {
 
@@ -109,7 +150,7 @@ class NaolFramework
             "labels"              => $labels,
             "description"         => "",
             "public"              => false,
-           
+
             "show_ui"             => true,
 
             "has_archive"         => false,
@@ -119,7 +160,7 @@ class NaolFramework
             "show_in_nav_menus"   => true,
             "delete_with_user"    => false,
             "exclude_from_search" => true,
-           // "map_meta_cap"        => true,
+            // "map_meta_cap"        => true,
             '_builtin'            => false,
             "capability_type"     => "post",
             "hierarchical"        => false,
@@ -230,7 +271,37 @@ class NaolFramework
 
         register_post_type("sidebar", $args);
 
-         $labels = [
+        $labels = [
+            "name"          => __("Menus", "naol-framework"),
+            "singular_name" => __("Menu", "naol-framework"),
+        ];
+
+        $args = [
+            "label"                 => __("Menus", "naol-framework"),
+            "labels"                => $labels,
+            "description"           => "",
+            "public"                => false,
+            "publicly_queryable"    => true,
+            "show_ui"               => true,
+            "show_in_rest"          => true,
+            "rest_base"             => "",
+            "rest_controller_class" => "WP_REST_Posts_Controller",
+            "has_archive"           => false,
+            "show_in_menu"          => true,
+            "show_in_nav_menus"     => true,
+            'menu_icon'             => 'dashicons-admin-generic',
+            "delete_with_user"      => false,
+            "exclude_from_search"   => true,
+
+            "map_meta_cap"          => true,
+            "hierarchical"          => false,
+            "rewrite"               => ["slug" => "menu", "with_front" => false],
+            "query_var"             => true,
+            "supports"              => ["title", "thumbnail"],
+        ];
+
+        register_post_type("menu", $args);
+        $labels = [
             "name"          => __("Data Sources", "naol-framework"),
             "singular_name" => __("Data Source", "naol-framework"),
         ];
@@ -281,7 +352,7 @@ class NaolFramework
             'account',
             'builder',
             'widgets',
-            'options-page'
+            'options-page',
 
         );
 

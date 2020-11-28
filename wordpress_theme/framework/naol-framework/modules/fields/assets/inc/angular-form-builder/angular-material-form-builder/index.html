@@ -1,0 +1,108 @@
+<!DOCTYPE doctype html>
+<html layout="column" ng-app="angularMaterialFormBuilder">
+    <head>
+        <meta charset="utf-8">
+            <title>
+                Angular Material Form Builder
+            </title>
+            <meta content="AngularJS dynamic form builder with material design implementation" name="description">
+                <meta content="angular, angularjs, google material, material design, form builder, form generator" name="keywords">
+                    <meta content="width=device-width" name="viewport">
+                        <link href="styles/vendor.css" rel="stylesheet">
+                            <link href="styles/app.css" rel="stylesheet"/>
+                        </link>
+                    </meta>
+                </meta>
+            </meta>
+        </meta>
+    </head>
+    <body class="main-view" ng-controller="MainController as main">
+        <!--[if lt IE 10]>
+ <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+ <![endif]-->
+        <div class="content" layout="row" layout-fill="" layout-margin="" layout-padding="">
+            <div class="builder" flex="" layout="column">
+                <h2>
+                    Form Builder
+                </h2>
+                <div layout="column">
+                    <form-item index="$index" item="item" ng-repeat="item in main.form.items track by $index" on-delete="main.delete(item, index)" on-down="main.down(item, index)" on-up="main.up(item, index)" type="{{item.type}}">
+                    </form-item>
+                </div>
+            </div>
+            <div class="view" flex="" layout="column">
+                <h2>
+                    Preview
+                </h2>
+                <form name="myFrom">
+                    <form-view form="main.form">
+                    </form-view>
+                </form>
+            </div>
+            <div class="json" flex="20" layout="column">
+                <h2>
+                    Json
+                </h2>
+                <pre>{{main.form | json}}</pre>
+            </div>
+        </div>
+        <md-fab-speed-dial class="md-fab-bottom-right md-scale" md-direction="up" md-open="main.isOpen">
+            <md-fab-trigger>
+                <md-button aria-label="..." class="md-fab md-warn">
+                    <i class="material-icons medium">
+                        add
+                    </i>
+                </md-button>
+            </md-fab-trigger>
+            <md-fab-actions>
+                <md-button aria-label="..." class="md-fab md-raised md-mini" ng-click="main.addItem('matrix')">
+                    <i class="material-icons">
+                        grid_on
+                    </i>
+                    <md-tooltip md-autohide="" md-direction="left">
+                        Matrix
+                    </md-tooltip>
+                </md-button>
+                <md-button aria-label="..." class="md-fab md-raised md-mini" ng-click="main.addItem('textarea')">
+                    <i class="material-icons">
+                        keyboard
+                    </i>
+                    <md-tooltip md-autohide="" md-direction="left">
+                        Text-Area
+                    </md-tooltip>
+                </md-button>
+                <md-button aria-label="..." class="md-fab md-raised md-mini" ng-click="main.addItem('input')">
+                    <i class="material-icons">
+                        text_format
+                    </i>
+                    <md-tooltip md-autohide="" md-direction="left">
+                        Text-Input
+                    </md-tooltip>
+                </md-button>
+                <md-button aria-label="..." class="md-fab md-raised md-mini" ng-click="main.addItem('multipleChoices')">
+                    <i class="material-icons">
+                        radio_button_checked
+                    </i>
+                    <md-tooltip md-autohide="" md-direction="left">
+                        Radio-Buttons
+                    </md-tooltip>
+                </md-button>
+                <md-button aria-label="..." class="md-fab md-raised md-mini" ng-click="main.addItem('checkboxes')">
+                    <i class="material-icons">
+                        check_box
+                    </i>
+                    <md-tooltip md-autohide="" md-direction="left">
+                        Checkboxes
+                    </md-tooltip>
+                </md-button>
+            </md-fab-actions>
+        </md-fab-speed-dial>
+        <a href="https://github.com/vlio20/angular-material-form-builder">
+            <img alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" style="position: absolute; top: 0; right: 0; border: 0;"/>
+        </a>
+        <script src="scripts/vendor.js">
+        </script>
+        <script src="scripts/app.js">
+        </script>
+    </body>
+</html>

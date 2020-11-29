@@ -48,34 +48,57 @@ if (!class_exists('acf_field_code_editor')):
 
         public function input_admin_enqueue_scripts()
     {
+       wp_enqueue_style('wp-codemirror');
+wp_enqueue_code_editor(array('codemirror'=>array('mode'=>'php')));
+ $settings = wp_get_code_editor_settings( array('codemirror'=>array('mode'=>'php')) );
+ wp_enqueue_script('acf-input-form-builder', acf_get_url('assets/inc/code-editor/mode/php/php.js'), array('jquery','acf-input'), '1.11.4');
+ print_r($settings['codemirror']['mode']);
+$var = array(
+    'cm_settings'   => $settings
+);
+wp_localize_script('wp-codemirror', 'my_var', $var);
 
         }
+
+
         public function render_field($field)
     {
-            $html = '';
-            // Prepend text.
-            if ($field['prepend'] !== '') {
-                $field['class'] .= ' acf-is-prepended';
-                $html .= '<div class="acf-input-prepend">' . acf_esc_html($field['prepend']) . '</div>';
-            }
+            $hidden_value  = '';
+            $display_value = '';
 
-            // Append text.
-            if ($field['append'] !== '') {
-                $field['class'] .= ' acf-is-appended';
-                $html .= '<div class="acf-input-append">' . acf_esc_html($field['append']) . '</div>';
-            }
+            // format value
 
-            // Input.
-            $input_attrs = array();
-            foreach (array('type', 'id', 'class', 'name', 'value', 'placeholder', 'maxlength', 'pattern', 'readonly', 'disabled', 'required') as $k) {
-                if (isset($field[$k])) {
-                    $input_attrs[$k] = $field[$k];
-                }
-            }
-            $html .= '<div class="acf-input-wrap">' . acf_get_text_input(acf_filter_attrs($input_attrs)) . '</div>';
+            // elements
+            $div = array(
+               
+                'class'     => 'acf-code-editor acf-input-wrap',
+                'data-name' => 'semir',
+                'data-id'   => 'builder-' . $field['id'],
 
-            // Display.
-            echo $html;
+            );
+
+            $hidden_input = array(
+                'id'    => $field['id'],
+                'name'  => $field['name'],
+                'value' => $hidden_value,
+            );
+            $text_input = array(
+                'class' => 'input',
+                'value' => $display_value,
+            );
+
+  $hidden_input['value'] = $field['value'];
+
+                // remove formatted value (will do this via JS)
+                $text_input['value'] = $field['value'];
+           ?>
+         <textarea id="acf-code-editor"></textarea>
+         <div <?php acf_esc_attr_e($div);?>>
+                 
+                <?php acf_hidden_input($hidden_input);?>
+                <?php acf_text_input($text_input);?>
+            </div>
+           <?php
         }
 
         /*

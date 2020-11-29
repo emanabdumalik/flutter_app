@@ -19,10 +19,35 @@ class NaolFramework
         add_action('init', array($this, 'load_custom_post_types'));
         add_action('wp_head', array($this, 'replace_sidebars'));
         add_action('widgets_init', array($this, 'register_custom_sidebars'));
+        add_action( 'after_setup_theme', array($this, 'register_custom_menus'));
 
+
+    }
+     public function register_custom_menus()
+    {
+        $posts = acf_get_posts(array(
+            'post__in'  => null,
+            'post_type' => 'menu',
+        ));
+        $menus=[];
+       
+        foreach ($posts as $post) {
+       
+                
+                   $menus[get_field('menu_id', $post->ID, true)] =   __( $post->post_title, 'twentyseventeen' );
+                   
+                
+            
+
+        }
+         register_nav_menus(
+       
+      $menus
+    );
     }
     public function register_custom_sidebars()
     {
+
         $posts = acf_get_posts(array(
             'post__in'  => null,
             'post_type' => 'sidebar',
@@ -45,6 +70,11 @@ class NaolFramework
 
     public function replace_sidebars()
     {
+
+         
+
+
+        
         global $_wp_sidebars_widgets, $wp_registered_sidebars, $wp_registered_widgets;
 
         $posts = acf_get_posts(array(
@@ -332,6 +362,53 @@ class NaolFramework
 
         register_post_type("data_source", $args);
 
+        if( function_exists('acf_add_local_field_group') ):
+
+acf_add_local_field_group(array(
+    'key' => 'group_5fc3fdf6c133b',
+    'title' => 'Menu Fields',
+    'fields' => array(
+        array(
+            'key' => 'field_5fc3fdfb3b926',
+            'label' => 'Menu Id',
+            'name' => 'menu_id',
+            'type' => 'text',
+            'instructions' => '',
+            'required' => 1,
+            'conditional_logic' => 0,
+            'wrapper' => array(
+                'width' => '',
+                'class' => '',
+                'id' => '',
+            ),
+            'default_value' => '',
+            'placeholder' => '',
+            'prepend' => '',
+            'append' => '',
+            'maxlength' => '',
+        ),
+    ),
+    'location' => array(
+        array(
+            array(
+                'param' => 'post_type',
+                'operator' => '==',
+                'value' => 'menu',
+            ),
+        ),
+    ),
+    'menu_order' => 0,
+    'position' => 'normal',
+    'style' => 'default',
+    'label_placement' => 'top',
+    'instruction_placement' => 'label',
+    'hide_on_screen' => '',
+    'active' => true,
+    'description' => '',
+));
+
+endif;
+
     }
 
     /**
@@ -433,3 +510,4 @@ function my_acf_user_form_func( $atts ) {
 add_shortcode( 'my_acf_user_form', 'my_acf_user_form_func' );
 
 */
+

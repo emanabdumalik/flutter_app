@@ -1447,6 +1447,60 @@
 	
 	var Field = acf.Field.extend({
 		
+		type: 'code_editor',
+		
+		
+		
+		$control: function(){
+			return this.$('#acf-code-editor');
+		},
+		
+		$input: function(){
+			return this.$('input[type="hidden"]');
+		},
+		
+		$inputText: function(){
+			return this.$('input[type="text"]');
+		},
+				
+		initialize: function(){
+			var self=this;
+			//alert(this);
+			console.log();
+			//my_var.cm_settings.value = self.$input().val();
+self.editor = wp.codeEditor.initialize($('#acf-code-editor'), my_var.cm_settings);
+	self.editor.codemirror.setValue(self.$input().val())
+		  self.editor.codemirror.on('change',function(){
+//alert( self.editor.codemirror.getValue());
+ acf.val( self.$input(), self.editor.codemirror.getValue() );
+		  	
+		  })
+
+			// save_format: compatibility with ACF < 5.0.0
+	
+			
+		},
+		
+
+		
+		onBlur: function(){
+		
+		},
+		
+		onDuplicate: function( e, $el, $duplicate ){
+		}
+	});
+	
+	acf.registerFieldType( Field );
+	
+	
+
+	
+})(jQuery);
+(function($, undefined){
+	
+	var Field = acf.Field.extend({
+		
 		type: 'post_type_select',
 		
 		

@@ -1,0 +1,18 @@
+.stylebot-designer {
+    position:fixed !important;
+    width:500px !important;
+display:none;
+    background:white;
+    right:0;
+    top:0;
+    z-index:99999;
+}
+#widget_preview {
+
+}
+.harif-form .ot-theme-option-panels {
+    position:absolute;
+
+}
+
+

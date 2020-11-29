@@ -1,0 +1,158 @@
+/* ----------------------------------------------------------------
+	Primary Menu
+-----------------------------------------------------------------*/
+
+
+#primary-menu { float: right; }
+
+#primary-menu ul.mobile-primary-menu { display: none; }
+
+#header.full-header #primary-menu > ul {
+    float: left;
+    padding-right: 15px;
+    margin-right: 15px;
+    border-right: 1px solid #EEE;
+}
+
+#header.transparent-header.full-header #primary-menu > ul { border-right-color: rgba(0,0,0,0.1); }
+
+#primary-menu-trigger,
+#page-submenu-trigger {
+    opacity: 0;
+    pointer-events: none;
+    cursor: pointer;
+    font-size: 14px;
+    position: absolute;
+    top: 50%;
+    margin-top: -25px;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    -webkit-transition: opacity .3s ease;
+    -o-transition: opacity .3s ease;
+    transition: opacity .3s ease;
+}
+
+#primary-menu ul {
+    list-style: none;
+    margin: 0;
+}
+
+#primary-menu > ul { float: left; }
+
+#primary-menu ul li { position: relative; }
+
+#primary-menu ul li.mega-menu { position: inherit; }
+
+#primary-menu ul > li {
+    float: left;
+    margin-left: 2px;
+}
+
+#primary-menu > ul > li:first-child { margin-left: 0; }
+
+#primary-menu ul li > a {
+    display: block;
+    line-height: 22px;
+    padding: 39px 15px;
+    color: #444;
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: 'Raleway', sans-serif;
+    -webkit-transition: margin .4s ease, padding .4s ease;
+    -o-transition: margin .4s ease, padding .4s ease;
+    transition: margin .4s ease, padding .4s ease;
+}
+
+#primary-menu ul li > a span { display: none; }
+
+#primary-menu ul li > a i {
+    position: relative;
+    top: -1px;
+    font-size: 14px;
+    width: 16px;
+    text-align: center;
+    margin-right: 6px;
+    vertical-align: top;
+}
+
+#primary-menu ul li > a i.icon-angle-down:last-child {
+    font-size: 12px;
+    margin: 0 0 0 5px;
+}
+
+#primary-menu ul li:hover > a,
+#primary-menu ul li.current > a { color: #1ABC9C; }
+
+#primary-menu > ul > li.sub-menu > a > div { }
+
+body.no-superfish #primary-menu li:hover > ul:not(.mega-menu-column),
+body.no-superfish #primary-menu li:hover > .mega-menu-content { display: block; }
+
+#primary-menu ul ul:not(.mega-menu-column),
+#primary-menu ul li .mega-menu-content {
+    display: none;
+    position: absolute;
+    width: 220px;
+    background-color: #FFF;
+    box-shadow: 0px 13px 42px 11px rgba(0, 0, 0, 0.05);
+    border: 1px solid #EEE;
+    border-top: 2px solid #1ABC9C;
+    height: auto;
+    z-index: 199;
+    top: 100%;
+    left: 0;
+    margin: 0;
+}
+
+#primary-menu ul ul:not(.mega-menu-column) ul {
+    top: -2px !important;
+    left: 218px;
+}
+
+#primary-menu ul ul.menu-pos-invert:not(.mega-menu-column),
+#primary-menu ul li .mega-menu-content.menu-pos-invert {
+    left: auto;
+    right: 0;
+}
+
+#primary-menu ul ul:not(.mega-menu-column) ul.menu-pos-invert { right: 218px; }
+
+#primary-menu ul ul li {
+    float: none;
+    margin: 0;
+}
+
+#primary-menu ul ul li:first-child { border-top: 0; }
+
+#primary-menu ul ul li > a {
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 0;
+    letter-spacing: 0;
+    font-family: 'Lato', sans-serif;
+    -webkit-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}
+
+#primary-menu ul ul li > a i { top: 0; }
+
+#primary-menu ul ul li:hover > a {
+    background-color: #F9F9F9;
+    padding-left: 18px;
+    color: #1ABC9C;
+}
+
+#primary-menu ul ul > li.sub-menu > a,
+#primary-menu ul ul > li.sub-menu:hover > a {
+    background-image: url("images/icons/submenu.png");
+    background-position: right center;
+    background-repeat: no-repeat;
+}

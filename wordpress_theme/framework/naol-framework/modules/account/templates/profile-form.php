@@ -15,7 +15,7 @@ Theme My Login will always look in your theme's directory first, before using th
 		</p>
 
 		<h3><?php _e( 'Personal Options', 'theme-my-login' ); ?></h3>
-
+<?php echo $current_user->ID;?>
 		<table class="tml-form-table">
 		<tr class="tml-user-admin-bar-front-wrap">
 			<th><label for="admin_bar_front"><?php _e( 'Toolbar', 'theme-my-login' )?></label></th>

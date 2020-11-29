@@ -1403,6 +1403,50 @@
 	
 	var Field = acf.Field.extend({
 		
+		type: 'test',
+		
+		
+		
+		$control: function(){
+			return this.$('.acf-post-type-select');
+		},
+		
+		$input: function(){
+			return this.$('input[type="hidden"]');
+		},
+		
+		$inputText: function(){
+			return this.$('input[type="text"]');
+		},
+				
+		initialize: function(){
+			//alert(this);
+			console.log(this);
+			// save_format: compatibility with ACF < 5.0.0
+		
+			
+		},
+		
+
+		
+		onBlur: function(){
+		
+		},
+		
+		onDuplicate: function( e, $el, $duplicate ){
+		}
+	});
+	
+	acf.registerFieldType( Field );
+	
+	
+
+	
+})(jQuery);
+(function($, undefined){
+	
+	var Field = acf.Field.extend({
+		
 		type: 'post_type_select',
 		
 		

@@ -452,8 +452,8 @@ class acf_form_front {
 			
 			
 			// redirect
-			wp_redirect( $return );
-			exit;
+		//wp_redirect( $return );
+			//exit;
 			
 		}
 		

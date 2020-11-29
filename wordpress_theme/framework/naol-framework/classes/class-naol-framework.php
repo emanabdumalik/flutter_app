@@ -386,3 +386,50 @@ if (class_exists('MultiPostThumbnails')) {
         )
     );
 }
+/*add_filter('single_template', 'my_custom_template');
+
+function my_custom_template($single) {
+
+    global $post;
+
+  
+    if ( $post->post_type == 'POST TYPE NAME' ) {
+        if ( file_exists( PLUGIN_PATH . '/Custom_File.php' ) ) {
+            return PLUGIN_PATH . '/Custom_File.php';
+        }
+    }
+
+    return $single;
+
+}
+
+
+function my_acf_user_form_func( $atts ) {
+ 
+  $a = shortcode_atts( array(
+    'field_group' => ''
+  ), $atts );
+ 
+  $uid = get_current_user_id();
+  
+  if ( ! empty ( $a['field_group'] ) && ! empty ( $uid ) ) {
+    $options = array(
+      'post_id' => 'user_'.$uid,
+      'field_groups' => array( intval( $a['field_group'] ) ),
+      'return' => add_query_arg( 'updated', 'true', get_permalink() )
+    );
+    
+    ob_start();
+    
+    acf_form( $options );
+    $form = ob_get_contents();
+    
+    ob_end_clean();
+  }
+  
+    return $form;
+}
+ 
+add_shortcode( 'my_acf_user_form', 'my_acf_user_form_func' );
+
+*/

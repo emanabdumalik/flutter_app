@@ -67,7 +67,7 @@ if (!class_exists('acf_field_template_builder')):
             );
             wp_enqueue_style(
                 'so-panels-admin',
-                siteorigin_panels_url( 'css/admin-front.css' ),
+                siteorigin_panels_url( 'css/admin.css' ),
                 array( 'wp-color-picker' ),
                 SITEORIGIN_PANELS_VERSION
             );

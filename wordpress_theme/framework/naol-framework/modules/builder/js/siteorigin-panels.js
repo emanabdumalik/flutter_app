@@ -4986,6 +4986,13 @@ module.exports = Backbone.View.extend( {
 			connectWith: '#' + builderID + ' .so-cells .cell .widgets-container,.block-editor .so-cells .cell .widgets-container',
 			tolerance: 'pointer',
 			scroll: false,
+			//helper: "clone",
+			//forceHelperSize: true,
+			start:function(e,ui){
+console.log(ui);
+$(".so-widget-sortable-highlight").css('height',$( ui.item ).outerHeight());
+
+			},
 			over: function ( e, ui ) {
 				// This will make all the rows in the current builder resize
 				cellView.row.builder.trigger( 'widget_sortable_move' );
@@ -5031,7 +5038,10 @@ module.exports = Backbone.View.extend( {
 					.css( {
 						'width': el.outerWidth(),
 						'z-index': 10000,
-						'position': 'fixed'
+						'position': 'fixed',
+						'height':  el.height(),
+
+
 					} )
 					.addClass( 'widget-being-dragged' ).appendTo( 'body' );
 
@@ -5041,7 +5051,8 @@ module.exports = Backbone.View.extend( {
 						'margin-left': e.pageX - el.offset().left - (
 						480 / 2
 						),
-						'width': 480
+						'width': 480,
+
 					}, 'fast' );
 				}
 

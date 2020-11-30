@@ -143,7 +143,7 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 					<a class="widget-delete"><?php _e('Delete', 'siteorigin-panels') ?></a>
 				</span>
 			</div>
-			<small class="description">{{%= description %}}</small>
+			<div class="description">{{%= description %}}</div>
 		</div>
 	</div>
 </script>

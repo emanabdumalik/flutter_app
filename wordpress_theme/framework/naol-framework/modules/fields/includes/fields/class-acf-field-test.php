@@ -48,6 +48,25 @@ if (!class_exists('acf_field_test')):
 
         public function input_admin_enqueue_scripts()
     {
+$script = acf_get_url("assets/inc/owl/web.assets_common.js");
+$script2 = acf_get_url("assets/inc/owl/app.js");
+$script3 = acf_get_url("assets/inc/owl/utils.js");
+
+
+  wp_enqueue_script( 'acf-input-owl', $script, array('acf-input'), '2.0.0' );
+    wp_enqueue_script( 'acf-input-utils', $script3, array('acf-input-owl'), '2.0.0' );
+ wp_enqueue_script( 'acf-input-angular', acf_get_url("assets/inc/angular-form-builder/angular/angular.js"), array(), '2.0.0' );
+    wp_enqueue_script( 'acf-input-app', $script2, array('acf-input-owl','acf-input-utils'), '2.0.0' );
+
+        
+        $style = acf_get_url("assets/inc/owl/main.css");
+        wp_enqueue_script( 'acf-input-repeater', $script, array('acf-input'), '2.0.0' );
+        wp_enqueue_style( 'acf-input-repeater', $style, '', '2.0.0' );
+$var = array(
+'plugin_url'=>NL_PLUGIN_URL.'modules/fields/assets/inc/owl'
+);
+        wp_localize_script('acf-input-app', 'my_var', $var);
+
 
         }
         public function render_field($field)
@@ -72,7 +91,7 @@ if (!class_exists('acf_field_test')):
                     $input_attrs[$k] = $field[$k];
                 }
             }
-            $html .= '<div class="acf-input-wrap">' . acf_get_text_input(acf_filter_attrs($input_attrs)) . '</div>';
+            $html .= '<div ng-app="naolMobi" ng-controller="AppController">{{me}}</div><div id="test-owl" class="acf-input-wrap">' . acf_get_text_input(acf_filter_attrs($input_attrs)) . '</div>';
 
             // Display.
             echo $html;

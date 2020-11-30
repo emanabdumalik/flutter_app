@@ -268,14 +268,15 @@ if (!class_exists('ACF')):
             acf_include('includes/fields/class-acf-field-accordion.php');
             acf_include('includes/fields/class-acf-field-tab.php');
             acf_include('includes/fields/class-acf-field-group.php');
-            acf_include('includes/fields/class-acf-field-repeater.php');
+           // acf_include('includes/fields/class-acf-field-repeater.php');
             acf_include('includes/fields/class-acf-field-post-type-select.php');
             acf_include('includes/fields/class-acf-field-data-source-select.php');
             acf_include('includes/fields/class-acf-field-form-builder.php');
-            acf_include('includes/fields/class-acf-field-template-builder.php');
+          //  acf_include('includes/fields/class-acf-field-template-builder.php');
             acf_include('includes/fields/class-acf-field-chart-builder.php');
-            acf_include('includes/fields/class-acf-field-code-editor.php');
+           // acf_include('includes/fields/class-acf-field-code-editor.php');
             acf_include('includes/fields/class-acf-field-test.php');
+           // acf_include('includes/fields/class-acf-field-flexible-content.php');
 
             /**
              * Fires after field types have been included.

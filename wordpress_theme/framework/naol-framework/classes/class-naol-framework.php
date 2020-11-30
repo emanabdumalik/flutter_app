@@ -424,12 +424,13 @@ endif;
     {
         /* setup the constants */
         $files = array(
-            'models',
+           
             'fields',
+             'models',
             'account',
-            'builder',
+           // 'builder',
             'widgets',
-            'options-page',
+            //'options-page',
 
         );
 

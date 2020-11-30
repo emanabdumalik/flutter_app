@@ -198,7 +198,7 @@ class SiteOrigin_Panels_Settings {
 	 * Add the Page Builder settings page
 	 */
 	function add_settings_page() {
-		$page = add_options_page( __( 'SiteOrigin Page Builder', 'siteorigin-panels' ), __( 'Page Builder', 'siteorigin-panels' ), 'manage_options', 'siteorigin_panels', array(
+		$page = add_submenu_page('edit.php?post_type=acf-field-group', __( 'SiteOrigin Page Builder', 'siteorigin-panels' ), __( 'Page Builder', 'siteorigin-panels' ), 'manage_options', 'siteorigin_panels', array(
 			$this,
 			'display_settings_page'
 		) );

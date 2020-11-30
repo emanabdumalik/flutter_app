@@ -335,9 +335,11 @@ if (!class_exists('acf_field_template_builder')):
             ?>
 
 
-    <div class="siteorigin-page-builder-widget " id="siteorigin-page-builder-widget-<?php echo $field_id ?>" data-builder-id="<?php echo esc_attr($field_id) ?>"
-         data-type="layout-widget" data-builder-supports="<?php echo esc_attr(json_encode($builder_supports)); ?>" data-live-editor="1">
-
+    <div class="siteorigin-page-builder-widget " id="siteorigin-page-builder-widget-<?php echo $field_id ?>" data-mode="dialog" data-builder-id="<?php echo esc_attr($field_id) ?>"
+         data-type="layout_widget" data-builder-supports="<?php echo esc_attr(json_encode($builder_supports)); ?>" data-live-editor="1">
+<p>
+                <button type="button" class="button-secondary siteorigin-panels-display-builder" ><?php _e('Open Builder', 'siteorigin-panels') ?></button>
+            </p>
         <input type="hidden" data-panels-filter="json_parse" value="" class="panels-data" name="<?php echo $field_name ?>" id="<?php echo $field_id ?>" />
     <?php
 
@@ -355,10 +357,13 @@ if (!class_exists('acf_field_template_builder')):
         <input type="hidden" value="<?php echo esc_attr($field_id) ?>"    />
     </div>
     <script type="text/javascript">
-        if( typeof jQuery.fn.soPanelsSetupBuilderWidget != 'undefined' && !jQuery('body').hasClass('wp-customizer') ) {
+       if(
+                typeof jQuery.fn.soPanelsSetupBuilderWidget != 'undefined' &&
+                ( ! jQuery('body').hasClass('wp-customizer'))
+            ) {
             jQuery( "#siteorigin-page-builder-widget-<?php echo esc_attr($field_id) ?>").soPanelsSetupBuilderWidget();
-        }
-
+        
+}
 
     </script><?php
     }

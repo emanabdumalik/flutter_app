@@ -428,7 +428,7 @@ endif;
             'fields',
              'models',
             'account',
-           // 'builder',
+            'builder',
             'widgets',
             //'options-page',
 

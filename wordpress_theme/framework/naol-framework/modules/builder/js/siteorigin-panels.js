@@ -7087,15 +7087,56 @@ module.exports = Backbone.View.extend( {
 	 * Render the widget
 	 */
 	render: function ( options ) {
+		//options = _.extend( {'loadForm': false}, options );
+
+	var p = this;
+		var thisView = this;
+		var v;
 		options = _.extend( {'loadForm': false}, options );
+		$.post(
 
-		this.setElement( this.template( {
-			title: this.model.getWidgetField( 'title' ),
-			description: this.model.getTitle(),
+			panelsOptions.ajaxurl,
+			{action:'get_model_display',data:JSON.stringify(p.model.get('values')),wclass:p.model.get('class')},
+			function(result){
+				v = result;
+				var html = result.replace( /{\$id}/g, thisView.model.cid );
+
+
+				p.$('.description').html(html);
+				
+
+				/*p.$('.description').draggable({
+
+					drag:function(event,ui){
+						x = ui.position.left;
+						console.log(ui.position.left)
+
+
+					},
+					stop:function(event,ui){
+						$(ui.helper).css({'margin-left':'+='+ui.position.left+'px'})
+						$(ui.helper).css('left',0)
+
+
+
+
+					}
+				})*/
+
+
+
+			}
+
+		);
+
+
+		p.setElement(p.template({
+			title: p.model.getWidgetField('title'),
+			description: '',
 			widget_class: this.model.attributes.class
-		} ) );
+		}));
+		p.$el.data( 'view', p );
 
-		this.$el.data( 'view', this );
 
 		// Remove any unsupported actions
 		if( ! this.cell.row.builder.supports( 'editWidget' ) || this.model.get( 'read_only' ) ) {
@@ -7132,10 +7173,10 @@ module.exports = Backbone.View.extend( {
 			dialog.setupDialog();
 		}
 
-		// Add the global builder listeners
-		this.listenTo(this.cell.row.builder, 'after_user_adds_widget', this.afterUserAddsWidgetHandler);
 
-		return this;
+
+		return p;
+
 	},
 
 	/**
@@ -7215,8 +7256,63 @@ module.exports = Backbone.View.extend( {
 	},
 
 	onModelChange: function () {
+		var p = this;
+		var thisView = this;
+		var v;
+		//options = _.extend( {'loadForm': false}, options );
+		$.post(
+
+			panelsOptions.ajaxurl,
+			{action:'get_model_display',data:JSON.stringify(p.model.get('values')),wclass:p.model.get('class')},
+			function(result){
+				v = result;
+				var html = result.replace( /{\$id}/g, thisView.model.cid );
+
+
+				p.$('.description').html(html);
+				setTimeout(function(){
+
+
+
+
+				},3000)
+
+				/*p.$('.description').draggable({
+
+					drag:function(event,ui){
+						x = ui.position.left;
+						console.log(ui.position.left)
+
+
+					},
+					stop:function(event,ui){
+						$(ui.helper).css({'margin-left':'+='+ui.position.left+'px'})
+						$(ui.helper).css('left',0)
+
+
+
+
+					}
+				})*/
+
+
+
+			}
+
+		);
+
+
+	
+
+
+		
 		// Update the description when ever the model changes
-		this.$( '.description' ).html( this.model.getTitle() );
+		//this.$( '.description' ).html( this.model.getTitle() );
+		//this.render();
+		
+
+		
+		
 	},
 
 	onLabelChange: function( model ) {

@@ -706,3 +706,20 @@ class SiteOrigin_Panels {
 }
 
 SiteOrigin_Panels::single();
+function get_the_widget_front_view(){
+	$request = array_map('stripslashes_deep', $_REQUEST);
+	$instance = !empty($request['data']) ? json_decode( $request['data'], true ) : array();
+	$widget = $request['wclass'];
+
+	$cl = new $widget;
+	$style = array();
+
+
+		echo '<div class="cellular-widget-design">'.$cl->widget($style,$instance).'</div>';;
+		//echo '<div style="display:none" class="cellular-widget-form">'.siteorigin_panels_render_form( $widget, $instance, $_REQUEST['raw'] == 'true' ).'</div>';
+
+
+	wp_die();
+}
+add_action('wp_ajax_get_model_display', 'get_the_widget_front_view');
+add_action('wp_ajax_nonpriv_get_model_display', 'get_the_widget_front_view');

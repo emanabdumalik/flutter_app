@@ -51,7 +51,7 @@ if (!class_exists('acf_field_template_builder')):
             wp_enqueue_media();
             wp_enqueue_script(
                 'so-panels-admin',
-                siteorigin_panels_url( 'js/siteorigin-panels' . SITEORIGIN_PANELS_JS_SUFFIX . '.js' ),
+                siteorigin_panels_url( 'js/siteorigin-panels.js' ),
                 array(
                     'jquery',
                     'jquery-ui-resizable',
@@ -67,7 +67,7 @@ if (!class_exists('acf_field_template_builder')):
             );
             wp_enqueue_style(
                 'so-panels-admin',
-                siteorigin_panels_url( 'css/admin' . SITEORIGIN_PANELS_CSS_SUFFIX . '.css' ),
+                siteorigin_panels_url( 'css/admin-front.css' ),
                 array( 'wp-color-picker' ),
                 SITEORIGIN_PANELS_VERSION
             );
@@ -334,7 +334,7 @@ if (!class_exists('acf_field_template_builder')):
 
             ?>
 
-hello
+
     <div class="siteorigin-page-builder-widget " id="siteorigin-page-builder-widget-<?php echo $field_id ?>" data-builder-id="<?php echo esc_attr($field_id) ?>"
          data-type="layout-widget" data-builder-supports="<?php echo esc_attr(json_encode($builder_supports)); ?>" data-live-editor="1">
 
